@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meetings</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>📎</text></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+	<h1>Meetings</h1>
+	<p class="sub">Post a Zoom or Google Meet link for anyone in the company to join.</p>
+
+	<form id="form" autocomplete="off">
+		<label>
+			<span>Title <small id="counter">0/10 words</small></span>
+			<input id="title" name="title" type="text" maxlength="120" placeholder="Weekly design sync" required>
+		</label>
+		<label>
+			<span>Link</span>
+			<input id="link" name="link" type="text" placeholder="https://meet.google.com/abc-defg-hij" required>
+		</label>
+		<button type="submit">Post</button>
+		<p id="error" class="error" role="alert" hidden></p>
+	</form>
+
+	<ul id="list"></ul>
+	<p id="empty" class="empty" hidden>No meetings posted yet.</p>
+</main>
+<script src="/app.js" type="module"></script>
+</body>
+</html>

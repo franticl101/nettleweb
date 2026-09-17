@@ -1,0 +1,4 @@
+node_modules/
+data/meetings.json
+*.log
+.DS_Store

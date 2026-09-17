@@ -1,0 +1,171 @@
+:root {
+	--bg: #ffffff;
+	--fg: #16181d;
+	--muted: #6b7280;
+	--line: #e4e6eb;
+	--accent: #2563eb;
+	--danger: #b91c1c;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #15171c;
+		--fg: #e9eaee;
+		--muted: #9aa0ab;
+		--line: #2b2f37;
+		--accent: #6d9bff;
+		--danger: #f87171;
+	}
+}
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	padding: 48px 16px 80px;
+	background: var(--bg);
+	color: var(--fg);
+	font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+	max-width: 620px;
+	margin: 0 auto;
+}
+
+h1 {
+	margin: 0;
+	font-size: 26px;
+	letter-spacing: -0.02em;
+}
+
+.sub {
+	margin: 6px 0 28px;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+form {
+	display: grid;
+	gap: 14px;
+	padding-bottom: 28px;
+	border-bottom: 1px solid var(--line);
+}
+
+label {
+	display: grid;
+	gap: 6px;
+}
+
+label > span {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+label small {
+	color: var(--muted);
+	font-weight: 400;
+}
+
+label small.over { color: var(--danger); }
+
+input {
+	padding: 10px 12px;
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+}
+
+input:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: -1px;
+	border-color: transparent;
+}
+
+button {
+	justify-self: start;
+	padding: 10px 18px;
+	border: 0;
+	border-radius: 8px;
+	background: var(--accent);
+	color: #fff;
+	font: inherit;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+button:disabled { opacity: 0.5; cursor: default; }
+
+.error {
+	margin: 0;
+	color: var(--danger);
+	font-size: 14px;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 0;
+	border-bottom: 1px solid var(--line);
+}
+
+.info {
+	flex: 1;
+	min-width: 0;
+}
+
+.title {
+	display: block;
+	overflow-wrap: anywhere;
+	font-weight: 600;
+}
+
+.meta {
+	display: flex;
+	gap: 8px;
+	margin-top: 2px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.join {
+	padding: 7px 14px;
+	border: 1px solid var(--accent);
+	border-radius: 8px;
+	color: var(--accent);
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.remove {
+	padding: 4px 8px;
+	border: 0;
+	border-radius: 6px;
+	background: transparent;
+	color: var(--muted);
+	font-size: 18px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.remove:hover { color: var(--danger); }
+
+.empty {
+	padding-top: 24px;
+	color: var(--muted);
+	font-size: 14px;
+}

@@ -1,0 +1,14 @@
+{
+  "name": "nettleweb",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal open board for posting Zoom and Google Meet links",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
