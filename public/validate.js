@@ -1,5 +1,6 @@
-// Shared rules for what may be posted. The server is the authority; the
-// browser runs a lighter copy of these checks just for instant feedback.
+// The rules for what may be posted, in one place. This file is served to the
+// browser as a module and is also imported by the Netlify function, which
+// bundles it in — so the board and the API can never drift apart.
 
 export const MAX_TITLE_WORDS = 10;
 export const MAX_TITLE_CHARS = 120;

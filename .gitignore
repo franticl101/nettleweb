@@ -1,4 +1,5 @@
 node_modules/
-data/meetings.json
+.netlify/
 *.log
 .DS_Store
+deno.lock
