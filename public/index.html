@@ -7,6 +7,7 @@
 <meta name="description" content="Post a Zoom or Google Meet link and anyone in the company can join.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%234f46e5'/><path d='M26 38a6 6 0 016-6h24a6 6 0 016 6v24a6 6 0 01-6 6H32a6 6 0 01-6-6V38zm42 6l10-7v26l-10-7z' fill='white'/></svg>">
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -14,72 +15,72 @@
 
 <header class="masthead">
 	<div class="wrap">
-		<div class="brand">
+		<span class="brand">
 			<span class="mark" aria-hidden="true">
-				<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="M15 11l6-4v10l-6-4"/></svg>
+				<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="M15 11l6-4v10l-6-4"/></svg>
 			</span>
 			<span>Meeting Board</span>
-		</div>
-		<div class="live" id="live" title="The board refreshes every 15 seconds">
+		</span>
+		<span class="live" id="live" title="The board refreshes every 15 seconds">
 			<span class="dot" aria-hidden="true"></span>
 			<span id="liveText">Live</span>
-		</div>
+		</span>
 	</div>
 </header>
 
 <main class="wrap">
 	<section class="hero">
 		<h1 id="greeting">Welcome</h1>
-		<p class="lede">Drop your Zoom or Google Meet link below and anyone at the company can join. No sign-in, no invites — everyone's welcome.</p>
+		<p class="lede">Drop a Zoom or Google Meet link and anyone at the company can join — no sign-in, no invites.</p>
 	</section>
 
-	<section class="card compose" aria-labelledby="composeHeading">
-		<h2 id="composeHeading">Share a meeting</h2>
+	<section class="composer" aria-labelledby="composeHeading">
+		<h2 id="composeHeading" class="sr-only">Share a meeting</h2>
 		<form id="form" autocomplete="off" novalidate>
-			<div class="field">
-				<label for="title">What's it about?</label>
-				<input id="title" name="title" type="text" maxlength="120" placeholder="Design review with the platform team" required>
-				<p class="hint"><span id="counter">0 of 10 words</span></p>
-			</div>
-
-			<div class="field">
-				<label for="link">Meeting link</label>
-				<div class="linkwrap">
-					<input id="link" name="link" type="text" inputmode="url" placeholder="https://meet.google.com/abc-defg-hij" required>
-					<span class="detect" id="detect" hidden></span>
+			<div class="fields">
+				<div class="field">
+					<label for="title">What's it about?</label>
+					<input id="title" name="title" type="text" maxlength="120" placeholder="Design review with the platform team" required>
+					<p class="hint" id="counter">0 of 10 words</p>
 				</div>
-				<p class="hint">Zoom and Google Meet links only.</p>
+				<div class="field">
+					<label for="link">Meeting link</label>
+					<span class="linkwrap">
+						<input id="link" name="link" type="text" inputmode="url" placeholder="meet.google.com/abc-defg-hij" required>
+						<span class="detect" id="detect" hidden></span>
+					</span>
+					<p class="hint">Zoom or Google Meet</p>
+				</div>
 			</div>
-
 			<div class="actions">
-				<button type="submit" id="submit">Post to the board</button>
+				<button type="submit" id="submit">Share with everyone</button>
+				<p class="shortcut" aria-hidden="true">or <kbd id="postKey">Ctrl</kbd><kbd>↵</kbd></p>
 				<p id="message" class="message" role="status" aria-live="polite" hidden></p>
 			</div>
 		</form>
 	</section>
 
 	<section class="board" aria-labelledby="boardHeading">
+		<h2 id="boardHeading" class="sr-only">Meetings on the board</h2>
 		<div class="toolbar">
-			<h2 id="boardHeading">On the board <span class="count" id="count">0</span></h2>
-			<div class="controls">
-				<label class="search">
-					<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-					<input id="search" type="search" placeholder="Search meetings" aria-label="Search meetings">
-				</label>
-				<div class="filters" role="group" aria-label="Filter by provider">
-					<button type="button" class="chip is-active" data-filter="all">All</button>
-					<button type="button" class="chip" data-filter="zoom">Zoom</button>
-					<button type="button" class="chip" data-filter="meet">Meet</button>
-				</div>
+			<div class="filters" role="group" aria-label="Filter by provider">
+				<button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All <span class="tally" data-tally="all">0</span></button>
+				<button type="button" class="chip" data-filter="zoom" aria-pressed="false">Zoom <span class="tally" data-tally="zoom">0</span></button>
+				<button type="button" class="chip" data-filter="meet" aria-pressed="false">Meet <span class="tally" data-tally="meet">0</span></button>
 			</div>
+			<label class="search">
+				<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+				<input id="search" type="search" placeholder="Search" aria-label="Search meetings">
+				<kbd aria-hidden="true">/</kbd>
+			</label>
 		</div>
 
-		<ul id="list" class="list"></ul>
+		<div id="results" class="results"></div>
 
 		<div id="empty" class="empty" hidden>
-			<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="M15 11l6-4v10l-6-4"/></svg>
+			<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="M15 11l6-4v10l-6-4"/></svg>
 			<p class="empty-title">The board is clear</p>
-			<p class="empty-note">Be the first to share a meeting — it shows up for everyone within 15 seconds.</p>
+			<p class="empty-note">Share the first meeting — everyone else sees it within 15 seconds.</p>
 		</div>
 	</section>
 </main>
@@ -88,6 +89,7 @@
 	<p>The board refreshes itself every 15 seconds. Anyone can post, anyone can tidy up — be kind to the board.</p>
 </footer>
 
+<p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
 <script src="/app.js" type="module"></script>
 </body>
 </html>

@@ -48,12 +48,33 @@ the function bundles in, so the page and the API can never disagree.
   one read. Writes re-read, apply the change and write conditionally on the
   blob's ETag (`onlyIfMatch`), retrying if someone got in first.
 
+## The page
+
+- **The board comes first.** The composer is one compact row, so meetings are
+  visible without scrolling on a laptop and on a phone.
+- **One heading per day**, pinned while you scroll. Today's meetings read as
+  freshness ("12 min ago"); older ones show a clock time, because the heading
+  above already says which day.
+- **Arrivals are marked.** Anything that appears via polling is outlined and
+  badged New for 20 seconds, and announced to screen readers. Nothing is marked
+  new on first load — the board is simply there.
+- **Filters carry their counts**, so "Zoom 7" says how much is behind it.
+- Skeleton rows on first paint, `/` to search, Ctrl/⌘+Enter to post, a copy
+  button per row, and the Zoom id shown the way Zoom writes it (844 5566 7788).
+- Every text pair clears WCAG AA in both themes (measured: 5.9–8.4:1), touch
+  targets are 42px on phones, and everything respects reduced motion.
+
+Inter is served from `public/fonts/` rather than a font CDN — one less third
+party, and it still renders correctly on a network that blocks one. It is
+licensed under the SIL Open Font License 1.1 (`public/fonts/OFL.txt`).
+
 ## Layout
 
 ```
 netlify/functions/meetings.mjs   the API: list, post, remove
 public/validate.js               the posting rules, shared with the browser
 public/index.html, style.css, app.js
+public/fonts/                    self-hosted Inter subset + licence
 netlify.toml                     publish dir, function dir, headers
 ```
 

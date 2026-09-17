@@ -17,3 +17,8 @@
 	for = "/index.html"
 	[headers.values]
 		Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+	for = "/fonts/*"
+	[headers.values]
+		Cache-Control = "public, max-age=31536000, immutable"
