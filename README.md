@@ -27,9 +27,39 @@ npm run dev        # netlify dev → http://localhost:8888
 - **Links** must be `https://` and on a Zoom host (`zoom.us`, any subdomain such
   as `us02web.zoom.us`, or `zoomgov.com`) or on `meet.google.com`. Lookalikes
   like `zoom.us.example.com` are rejected.
-- The board holds the 300 most recent meetings.
-- Anyone can post and anyone can remove — the board is open by design.
+- **Everything expires**, at most 2 days out. The composer offers *In 4 hours*,
+  *End of today*, *End of tomorrow* and an exact time; leaving it out of an API
+  call means the full 2 days.
+- **Only whoever posted a meeting can take it down** before it expires.
+- Anyone can post. The board holds the 300 most recent meetings.
 - One IP can post 20 meetings a minute.
+
+### Who can remove what
+
+Posting sets two cookies, a year long:
+
+| Cookie | Readable by JS | What it does |
+| --- | --- | --- |
+| `mb_token` | no (`HttpOnly`) | the secret; the only thing that authorises a removal |
+| `mb_id` | yes | `sha256(mb_token)`, so the page knows which rows are yours |
+
+A meeting stores `mb_id`, never the secret. The page shows a remove button on
+rows whose `owner` matches its own `mb_id`; the function independently hashes
+the secret cookie and compares. Forging `mb_id` only makes a button appear — the
+removal is still refused. Because the stored value is the same for every viewer,
+the board stays one shared, edge-cacheable document.
+
+Identity is per browser: a new laptop or a cleared cookie jar means you can no
+longer remove what you posted. It expires on its own within 2 days regardless.
+
+### Expiry
+
+Expired meetings are removed in three places, so none of them has to be perfect:
+
+1. The API never serves one, whatever the cleanup has got round to.
+2. The page drops one the moment it lapses, without waiting for a poll.
+3. `netlify/functions/prune.mjs` runs every 15 minutes and deletes them from
+   storage; any post or removal prunes on the way past as well.
 
 The rules live in `public/validate.js`, which the browser loads as a module and
 the function bundles in, so the page and the API can never disagree.
@@ -72,6 +102,8 @@ licensed under the SIL Open Font License 1.1 (`public/fonts/OFL.txt`).
 
 ```
 netlify/functions/meetings.mjs   the API: list, post, remove
+netlify/functions/prune.mjs      scheduled cleanup of expired meetings
+netlify/board.mjs                the stored board, shared by both
 public/validate.js               the posting rules, shared with the browser
 public/index.html, style.css, app.js
 public/fonts/                    self-hosted Inter subset + licence
@@ -83,15 +115,26 @@ netlify.toml                     publish dir, function dir, headers
 | Method | Path | Body | Result |
 | --- | --- | --- | --- |
 | `GET` | `/api/meetings` | — | `{ meetings: [...] }` newest first, with an `ETag`; `304` when unchanged |
-| `POST` | `/api/meetings` | `{ "title": "...", "link": "..." }` | `201` with the meeting, or `400` with `{ error }` |
-| `DELETE` | `/api/meetings/:id` | — | `{ ok: true, removed: boolean }` — removing twice is not an error |
+| `POST` | `/api/meetings` | `{ "title", "link", "expiresAt"? }` | `201` with the meeting plus identity cookies, or `400` with `{ error }` |
+| `DELETE` | `/api/meetings/:id` | — | `{ ok, removed }`; `{ ok: false, error }` when it is not yours |
+
+`DELETE` answers `200` even when it refuses. Netlify retries a function's `403`
+and `404` against the static files — "mimic the CDN behavior", in the CLI's own
+words — so a path-routed function that answers with either has its answer
+replaced by whatever that retry returns. The outcome is in the body instead.
 
 ## Known limits
 
 - `netlify dev`'s Blobs sandbox does not return ETags, so two posts in the same
   instant can overwrite each other locally. Deployed sites return ETags and use
   the conditional write, so this does not happen in production.
-- There is no authentication at all: anyone who can open the page can post or
-  remove anything. Put the site behind your company SSO (Netlify Identity, an
-  access-control add-on, or a private network) if the URL will be reachable
+- There is no sign-in: anyone who can open the page can post, and cookies say
+  only who posted what. Put the site behind your company SSO (Netlify Identity,
+  an access-control add-on, or a private network) if the URL will be reachable
   outside the company.
+- There is no moderator override. If someone posts something that should come
+  down and they are unreachable, nobody can remove it before it expires — worst
+  case 2 days. An admin token checked alongside the owner check would be a small
+  addition if you want one.
+- Meetings posted from the same browser share an `owner` value, so a viewer can
+  tell that some meetings came from one person, though not who.

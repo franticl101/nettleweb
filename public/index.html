@@ -52,6 +52,20 @@
 					<p class="hint">Zoom or Google Meet</p>
 				</div>
 			</div>
+			<div class="field expiry-field">
+				<span class="field-head">
+					<span class="field-label" id="expiryLabel">Expires</span>
+					<span class="hint" id="expiryHint">Stays on the board until 11:59 PM.</span>
+				</span>
+				<div class="expiry" role="radiogroup" aria-labelledby="expiryLabel">
+					<button type="button" class="chip" data-expiry="4h" role="radio" aria-checked="false">In 4 hours</button>
+					<button type="button" class="chip" data-expiry="today" role="radio" aria-checked="true">End of today</button>
+					<button type="button" class="chip" data-expiry="tomorrow" role="radio" aria-checked="false">End of tomorrow</button>
+					<button type="button" class="chip" data-expiry="custom" role="radio" aria-checked="false">Pick a time</button>
+					<input id="expiryAt" type="datetime-local" aria-label="Expiry date and time" hidden>
+				</div>
+			</div>
+
 			<div class="actions">
 				<button type="submit" id="submit">Share with everyone</button>
 				<p class="shortcut" aria-hidden="true">or <kbd id="postKey">Ctrl</kbd><kbd>↵</kbd></p>
@@ -86,7 +100,7 @@
 </main>
 
 <footer class="wrap foot">
-	<p>The board refreshes itself every 15 seconds. Anyone can post, anyone can tidy up — be kind to the board.</p>
+	<p>The board refreshes itself every 15 seconds. Meetings clear themselves after at most 2 days, and only the person who posted one can take it down sooner.</p>
 </footer>
 
 <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>

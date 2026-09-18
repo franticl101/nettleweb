@@ -5,6 +5,12 @@
 export const MAX_TITLE_WORDS = 10;
 export const MAX_TITLE_CHARS = 120;
 
+/** Nothing may sit on the board for more than two days. */
+export const MAX_EXPIRY_MS = 48 * 60 * 60 * 1000;
+const MIN_EXPIRY_MS = 60 * 1000;
+/** Browser clocks drift; do not reject someone for being a few minutes fast. */
+const CLOCK_SKEW_MS = 5 * 60 * 1000;
+
 const ZOOM_HOSTS = /^(?:[a-z0-9-]+\.)*zoom\.us$/;
 const ZOOMGOV_HOSTS = /^(?:[a-z0-9-]+\.)*zoomgov\.com$/;
 const MEET_HOST = "meet.google.com";
@@ -66,4 +72,31 @@ export function validateLink(value) {
 	}
 
 	return { ok: false, error: "Only Zoom and Google Meet links can be posted." };
+}
+
+/**
+ * When the meeting should drop off the board. Leaving it out means the maximum.
+ * @param {unknown} value an ISO timestamp
+ * @param {number} [now]
+ * @returns {{ ok: true, expiresAt: string } | { ok: false, error: string }}
+ */
+export function validateExpiry(value, now = Date.now()) {
+	if (value == null || value === "")
+		return { ok: true, expiresAt: new Date(now + MAX_EXPIRY_MS).toISOString() };
+
+	if (typeof value !== "string")
+		return { ok: false, error: "That expiry time is not a valid date." };
+
+	const at = Date.parse(value);
+	if (!Number.isFinite(at))
+		return { ok: false, error: "That expiry time is not a valid date." };
+
+	if (at < now + MIN_EXPIRY_MS)
+		return { ok: false, error: "Pick a time at least a minute from now." };
+
+	if (at > now + MAX_EXPIRY_MS + CLOCK_SKEW_MS)
+		return { ok: false, error: "Meetings can stay on the board for at most 2 days." };
+
+	// A clock a little fast is clamped rather than refused.
+	return { ok: true, expiresAt: new Date(Math.min(at, now + MAX_EXPIRY_MS)).toISOString() };
 }

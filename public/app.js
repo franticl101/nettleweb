@@ -1,4 +1,4 @@
-import { MAX_TITLE_WORDS, validateLink, validateTitle } from "/validate.js";
+import { MAX_EXPIRY_MS, MAX_TITLE_WORDS, validateExpiry, validateLink, validateTitle } from "/validate.js";
 
 const POLL_MS = 15_000;
 const NEW_FOR_MS = 20_000;
@@ -16,6 +16,9 @@ const el = {
 	empty: document.getElementById("empty"),
 	emptyTitle: document.querySelector(".empty-title"),
 	emptyNote: document.querySelector(".empty-note"),
+	expiry: document.querySelector(".expiry"),
+	expiryAt: document.getElementById("expiryAt"),
+	expiryHint: document.getElementById("expiryHint"),
 	search: document.getElementById("search"),
 	greeting: document.getElementById("greeting"),
 	live: document.getElementById("live"),
@@ -24,6 +27,7 @@ const el = {
 };
 
 const state = {
+	expiry: "today",
 	meetings: [],
 	etag: null,
 	filter: "all",
@@ -60,8 +64,10 @@ function countWords(value) {
  * rounded "2 days ago" under a "Yesterday" heading is just confusing.
  */
 function postedLabel(iso, group) {
+	// "2:21 AM" on its own would sit next to the expiry time and read as one of
+	// a pair of unlabelled clocks, so say which one it is.
 	if (group !== "Today")
-		return new Date(iso).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+		return `posted ${new Date(iso).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
 
 	const minutes = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
 	if (minutes < 1) return "just now";
@@ -117,6 +123,83 @@ function dayGroup(iso) {
 	return posted.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
 }
 
+/** The chip presets, as absolute times. Everything is capped at two days. */
+function presetExpiry(preset, now = new Date()) {
+	if (preset === "4h")
+		return new Date(now.getTime() + 4 * 60 * 60 * 1000);
+
+	const endOf = (date) => {
+		const end = new Date(date);
+		end.setHours(23, 59, 0, 0);
+		return end;
+	};
+
+	if (preset === "tomorrow")
+		return endOf(new Date(now.getTime() + 86_400_000));
+
+	return endOf(now);
+}
+
+/** A datetime-local value ("2026-09-18T17:30") for the given moment. */
+function localInputValue(date) {
+	const pad = (n) => String(n).padStart(2, "0");
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** The expiry the composer currently describes, as an ISO timestamp. */
+function chosenExpiry() {
+	if (state.expiry !== "custom")
+		return presetExpiry(state.expiry).toISOString();
+
+	const at = new Date(el.expiryAt.value);
+	return Number.isNaN(at.getTime()) ? null : at.toISOString();
+}
+
+function describeExpiry() {
+	const iso = chosenExpiry();
+	if (iso == null) {
+		el.expiryHint.textContent = "Pick a date and time, at most 2 days from now.";
+		return;
+	}
+
+	const at = new Date(iso);
+	const sameDay = at.toDateString() === new Date().toDateString();
+	const time = at.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+	const day = sameDay ? "" : ` ${at.toLocaleDateString(undefined, { weekday: "long" })}`;
+	el.expiryHint.textContent = `Stays on the board until${day} ${time}.`;
+}
+
+/**
+ * How long a meeting has left. Always rounded down: a deadline that overstates
+ * the time remaining is worse than one that understates it.
+ */
+function remainingLabel(meeting) {
+	const left = Date.parse(meeting.expiresAt) - Date.now();
+	if (left <= 0) return "expired";
+	if (left < 60_000) return "expires in under a minute";
+
+	const minutes = Math.floor(left / 60_000);
+	if (minutes < 60) return `expires in ${minutes} min`;
+
+	const hours = Math.floor(minutes / 60);
+	if (hours < 24) return hours === 1 ? "expires in 1 hour" : `expires in ${hours} hours`;
+
+	const at = new Date(meeting.expiresAt);
+	return `expires ${at.toLocaleDateString(undefined, { weekday: "short" })} ${at.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}`;
+}
+
+const expiringSoon = (meeting) => Date.parse(meeting.expiresAt) - Date.now() < 60 * 60 * 1000;
+
+/** The readable half of the identity cookie pair; the secret is HttpOnly. */
+function myOwnerId() {
+	for (const part of document.cookie.split(";")) {
+		const [name, value] = part.split("=");
+		if (name?.trim() === "mb_id")
+			return value?.trim() || null;
+	}
+	return null;
+}
+
 function greeting() {
 	const hour = new Date().getHours();
 	if (hour < 12) return "Good morning";
@@ -141,10 +224,16 @@ function setOnline(online) {
 
 /* Rendering ---------------------------------------------------------------- */
 
+/** Rows vanish the moment they expire, without waiting for the next poll. */
+function liveMeetings() {
+	const now = Date.now();
+	return state.meetings.filter((meeting) => Date.parse(meeting.expiresAt) > now);
+}
+
 function visibleMeetings() {
 	const query = state.query.trim().toLowerCase();
 
-	return state.meetings.filter((meeting) => {
+	return liveMeetings().filter((meeting) => {
 		if (state.filter !== "all" && meeting.provider !== state.filter)
 			return false;
 		return query === "" || meeting.title.toLowerCase().includes(query);
@@ -203,7 +292,16 @@ function meetingRow(meeting, group) {
 	const when = document.createElement("span");
 	when.textContent = postedLabel(meeting.createdAt, group);
 	when.title = `Posted ${exactTime(meeting.createdAt)}`;
-	meta.append(sep2, when);
+
+	const sep3 = document.createElement("span");
+	sep3.className = "sep";
+	sep3.textContent = "·";
+	const expiry = document.createElement("span");
+	expiry.className = expiringSoon(meeting) ? "expires is-soon" : "expires";
+	expiry.textContent = remainingLabel(meeting);
+	expiry.title = `Comes off the board ${exactTime(meeting.expiresAt)}`;
+
+	meta.append(sep2, when, sep3, expiry);
 
 	info.append(titleRow, meta);
 
@@ -235,15 +333,21 @@ function meetingRow(meeting, group) {
 		}
 	});
 
-	const remove = document.createElement("button");
-	remove.type = "button";
-	remove.className = "icon-btn remove";
-	remove.title = "Remove from the board";
-	remove.setAttribute("aria-label", `Remove ${meeting.title} from the board`);
-	remove.innerHTML = ICONS.remove;
-	remove.addEventListener("click", () => removeMeeting(meeting, remove));
+	item.append(avatar, info, join, copy);
 
-	item.append(avatar, info, join, copy, remove);
+	// Only the person who posted it can take it down, so only they get the
+	// button. The server checks the secret cookie regardless of what is shown.
+	if (meeting.owner != null && meeting.owner === myOwnerId()) {
+		const remove = document.createElement("button");
+		remove.type = "button";
+		remove.className = "icon-btn remove";
+		remove.title = "Remove — you posted this";
+		remove.setAttribute("aria-label", `Remove ${meeting.title} from the board`);
+		remove.innerHTML = ICONS.remove;
+		remove.addEventListener("click", () => removeMeeting(meeting, remove));
+		item.append(remove);
+	}
+
 	return item;
 }
 
@@ -258,8 +362,9 @@ function skeletons(count = 3) {
 }
 
 function updateTallies() {
-	const counts = { all: state.meetings.length, zoom: 0, meet: 0 };
-	for (const meeting of state.meetings)
+	const live = liveMeetings();
+	const counts = { all: live.length, zoom: 0, meet: 0 };
+	for (const meeting of live)
 		counts[meeting.provider] = (counts[meeting.provider] || 0) + 1;
 
 	for (const [name, value] of Object.entries(counts)) {
@@ -300,7 +405,7 @@ function render() {
 	}
 
 	el.empty.hidden = meetings.length > 0;
-	const filtered = state.meetings.length > 0;
+	const filtered = liveMeetings().length > 0;
 	el.emptyTitle.textContent = filtered ? "Nothing matches" : "The board is clear";
 	el.emptyNote.textContent = filtered
 		? "Try another search, or switch back to All."
@@ -379,9 +484,12 @@ async function removeMeeting(meeting, button) {
 	button.disabled = true;
 	try {
 		const res = await fetch(`/api/meetings/${meeting.id}`, { method: "DELETE" });
-		if (!res.ok) {
+		const data = await res.json().catch(() => ({}));
+
+		// A refusal comes back as ok:false at 200 — see the note in the function.
+		if (!res.ok || data.ok === false) {
 			button.disabled = false;
-			setMessage("That meeting could not be removed. Try again in a moment.", "error");
+			setMessage(data.error || "That meeting could not be removed. Try again in a moment.", "error");
 			return;
 		}
 
@@ -417,10 +525,10 @@ el.search.addEventListener("input", () => {
 	render();
 });
 
-for (const chip of document.querySelectorAll(".chip")) {
+for (const chip of document.querySelectorAll(".filters .chip")) {
 	chip.addEventListener("click", () => {
 		state.filter = chip.dataset.filter;
-		for (const other of document.querySelectorAll(".chip")) {
+		for (const other of document.querySelectorAll(".filters .chip")) {
 			const active = other === chip;
 			other.classList.toggle("is-active", active);
 			other.setAttribute("aria-pressed", String(active));
@@ -428,6 +536,27 @@ for (const chip of document.querySelectorAll(".chip")) {
 		render();
 	});
 }
+
+function selectExpiry(preset) {
+	state.expiry = preset;
+
+	for (const chip of document.querySelectorAll(".expiry .chip")) {
+		const active = chip.dataset.expiry === preset;
+		chip.classList.toggle("is-active", active);
+		chip.setAttribute("aria-checked", String(active));
+	}
+
+	el.expiryAt.hidden = preset !== "custom";
+	if (preset === "custom" && el.expiryAt.value === "")
+		el.expiryAt.value = localInputValue(presetExpiry("today"));
+
+	describeExpiry();
+}
+
+for (const chip of document.querySelectorAll(".expiry .chip"))
+	chip.addEventListener("click", () => selectExpiry(chip.dataset.expiry));
+
+el.expiryAt.addEventListener("input", describeExpiry);
 
 el.form.addEventListener("submit", async (event) => {
 	event.preventDefault();
@@ -447,12 +576,20 @@ el.form.addEventListener("submit", async (event) => {
 		return;
 	}
 
+	const expiry = validateExpiry(chosenExpiry());
+	if (!expiry.ok) {
+		setMessage(expiry.error, "error");
+		if (state.expiry === "custom")
+			el.expiryAt.focus();
+		return;
+	}
+
 	el.submit.disabled = true;
 	try {
 		const res = await fetch("/api/meetings", {
 			method: "POST",
 			headers: { "content-type": "application/json" },
-			body: JSON.stringify({ title: title.title, link: link.link })
+			body: JSON.stringify({ title: title.title, link: link.link, expiresAt: expiry.expiresAt })
 		});
 		const data = await res.json();
 
@@ -467,7 +604,8 @@ el.form.addEventListener("submit", async (event) => {
 		state.etag = null;
 		render();
 
-		el.form.reset();
+		el.title.value = "";
+		el.link.value = "";
 		el.counter.textContent = `0 of ${MAX_TITLE_WORDS} words`;
 		el.counter.classList.remove("over");
 		el.detect.hidden = true;
@@ -513,6 +651,12 @@ setInterval(render, 30_000);
 
 if (navigator.platform?.startsWith("Mac") || navigator.userAgent.includes("Mac OS"))
 	el.postKey.textContent = "⌘";
+
+el.expiryAt.min = localInputValue(new Date(Date.now() + 60_000));
+el.expiryAt.max = localInputValue(new Date(Date.now() + MAX_EXPIRY_MS));
+
+// Late in the evening "end of today" is minutes away, so start on 4 hours.
+selectExpiry(presetExpiry("today").getTime() - Date.now() < 60 * 60 * 1000 ? "4h" : "today");
 
 el.counter.textContent = `0 of ${MAX_TITLE_WORDS} words`;
 render();
