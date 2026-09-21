@@ -6,6 +6,9 @@ title and everyone else can drop in within 15 seconds. No accounts, no invites.
 Static page on Netlify, one Netlify Function for the API, Netlify Blobs for
 storage. Nothing else to run.
 
+Building it from scratch, or handing it to someone who will? `docs/BUILD_PROMPT.md`
+is the whole specification, including the platform traps that are easy to hit.
+
 ## Local development
 
 ```sh
