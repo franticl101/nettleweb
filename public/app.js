@@ -21,8 +21,6 @@ const el = {
 	expiryHint: document.getElementById("expiryHint"),
 	search: document.getElementById("search"),
 	greeting: document.getElementById("greeting"),
-	live: document.getElementById("live"),
-	liveText: document.getElementById("liveText"),
 	announcer: document.getElementById("announcer")
 };
 
@@ -32,7 +30,6 @@ const state = {
 	etag: null,
 	filter: "all",
 	query: "",
-	online: true,
 	loaded: false,
 	/** id -> the moment it first appeared here, so arrivals can be highlighted */
 	arrivals: new Map()
@@ -211,15 +208,6 @@ function setMessage(text, kind) {
 	el.message.textContent = text || "";
 	el.message.hidden = !text;
 	el.message.className = `message ${text ? `is-${kind}` : ""}`.trim();
-}
-
-function setOnline(online) {
-	if (state.online === online)
-		return;
-
-	state.online = online;
-	el.live.classList.toggle("is-offline", !online);
-	el.liveText.textContent = online ? "Live" : "Reconnecting";
 }
 
 /* Rendering ---------------------------------------------------------------- */
@@ -444,8 +432,6 @@ async function poll() {
 		const headers = state.etag == null ? {} : { "if-none-match": state.etag };
 		const res = await fetch("/api/meetings", { headers, cache: "no-store" });
 
-		setOnline(true);
-
 		// 304: nobody has posted since the last poll, so there is nothing to do.
 		if (res.status === 304)
 			return;
@@ -461,7 +447,7 @@ async function poll() {
 		state.loaded = true;
 		render();
 	} catch {
-		setOnline(false);
+		// A failed poll is not worth reporting: the next one is 15s away.
 	}
 }
 
@@ -499,7 +485,7 @@ async function removeMeeting(meeting, button) {
 		render();
 	} catch {
 		button.disabled = false;
-		setOnline(false);
+		setMessage("We couldn't reach the board. Try again in a moment.", "error");
 	}
 }
 
@@ -612,7 +598,6 @@ el.form.addEventListener("submit", async (event) => {
 		setMessage("Posted — everyone can see it now.", "ok");
 		setTimeout(() => setMessage(""), 4000);
 	} catch {
-		setOnline(false);
 		setMessage("We couldn't reach the board. Check your connection and try again.", "error");
 	} finally {
 		el.submit.disabled = false;
@@ -643,8 +628,8 @@ document.addEventListener("visibilitychange", () => {
 	startPolling();
 });
 
+// Catch up as soon as the connection comes back.
 window.addEventListener("online", () => poll());
-window.addEventListener("offline", () => setOnline(false));
 
 // Keeps "3 min ago", the greeting and the New badges honest between polls.
 setInterval(render, 30_000);

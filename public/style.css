@@ -152,36 +152,6 @@ body {
 	box-shadow: var(--shadow-sm);
 }
 
-.live {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	padding: 5px 12px 5px 10px;
-	border: 1px solid var(--line);
-	border-radius: 999px;
-	background: var(--panel);
-	color: var(--muted);
-	font-size: 12.5px;
-	font-weight: 500;
-	box-shadow: var(--shadow-sm);
-}
-
-.live .dot {
-	width: 7px;
-	height: 7px;
-	border-radius: 50%;
-	background: var(--meet);
-	animation: pulse 2.6s ease-out infinite;
-}
-
-.live.is-offline .dot { background: var(--danger); animation: none; }
-
-@keyframes pulse {
-	0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--meet) 55%, transparent); }
-	70% { box-shadow: 0 0 0 7px transparent; }
-	100% { box-shadow: 0 0 0 0 transparent; }
-}
-
 /* Hero -------------------------------------------------------------------- */
 
 .hero { padding: 22px 0 24px; }

@@ -156,8 +156,10 @@ as a key, and **fail open**: if the limiter itself errors, allow the post.
 
 ### The page
 
-Layout, top to bottom: masthead (wordmark + a pulsing "Live" pill) → a short
-time-of-day greeting and one-line lede → a compact composer → the board.
+Layout, top to bottom: masthead (wordmark) → a short time-of-day greeting and
+one-line lede → a compact composer → the board. Resist adding a "Live"
+indicator: the arriving rows below already show the board is live, and a pill
+that mostly says the same word is noise.
 
 **The composer must not fill the first screen.** Most people open this page to
 read it. Two fields side by side on desktop (title, link), the expiry chips and
