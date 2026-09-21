@@ -409,7 +409,7 @@ function render() {
 	el.emptyTitle.textContent = filtered ? "Nothing matches" : "The board is clear";
 	el.emptyNote.textContent = filtered
 		? "Try another search, or switch back to All."
-		: "Share the first meeting — everyone else sees it within 15 seconds.";
+		: "Share the first meeting — everyone else can drop in within 15 seconds.";
 }
 
 /* Data --------------------------------------------------------------------- */

@@ -1,8 +1,8 @@
 {
-  "name": "nettleweb",
+  "name": "dropin",
   "version": "2.0.0",
   "private": true,
-  "description": "An open board where anyone in the company can post a Zoom or Google Meet link",
+  "description": "Dropin — an open board where anyone at the company can post a Zoom or Google Meet link",
   "type": "module",
   "scripts": {
     "dev": "netlify dev",

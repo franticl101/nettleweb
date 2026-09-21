@@ -1,7 +1,7 @@
-# Meeting Board
+# Dropin
 
 An open board for a whole company: post a Zoom or Google Meet link with a short
-title and everyone else sees it within 15 seconds. No accounts, no invites.
+title and everyone else can drop in within 15 seconds. No accounts, no invites.
 
 Static page on Netlify, one Netlify Function for the API, Netlify Blobs for
 storage. Nothing else to run.
