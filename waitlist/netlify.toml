@@ -1,0 +1,22 @@
+# The Block Zero waitlist deploys as its own site: set the Netlify base directory to "waitlist".
+# The form posts to Netlify Forms; turn on form detection for the site so it is picked up.
+[build]
+	publish = "."
+	command = "echo 'Static page, no build step.'"
+
+[[headers]]
+	for = "/*"
+	[headers.values]
+		X-Content-Type-Options = "nosniff"
+		X-Frame-Options = "DENY"
+		Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+	for = "/index.html"
+	[headers.values]
+		Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+	for = "/fonts/*"
+	[headers.values]
+		Cache-Control = "public, max-age=31536000, immutable"
