@@ -33,35 +33,25 @@
     </div>
 
     <div class="hero-panel" data-rise style="--i:4">
-      <div class="feed" data-ui aria-label="Example of the Block Zero launch feed">
+      <div class="feed" data-ui id="feed">
         <div class="feed-head">
           <span class="feed-title">New launches</span>
-          <span class="feed-meta">Solana · watching all</span>
+          <span class="feed-meta"><span class="live-dot" aria-hidden="true"></span>Sample data, replaying</span>
         </div>
         <div class="feed-cols" aria-hidden="true"><span>Token</span><span class="num">Age</span><span class="num">Mcap</span><span class="num">Holders</span><span class="num">Read</span></div>
-        <ul class="feed-rows">
-          <li class="feed-row is-hover">
-            <span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>7Hq3…pump</small></span></span>
-            <span class="num">0:09</span><span class="num">$13.8k</span><span class="num">61</span>
-            <span class="num"><span class="pill pill-neg">3 flags</span></span>
-            <svg class="pointer" viewBox="0 0 16 22" width="16" height="22" aria-hidden="true"><path d="M1 1v17l4.5-4.2 3 6.6 3-1.4-3-6.4H15z" fill="#2a1d17" stroke="#f3f2ef" stroke-width="1.4" stroke-linejoin="round"/></svg>
-          </li>
-          <li class="feed-row">
-            <span class="tok"><span class="av av-2" aria-hidden="true">T</span><span class="tok-name">$TOADSTOOL<small>9vRm…pump</small></span></span>
-            <span class="num">0:31</span><span class="num">$21.2k</span><span class="num">188</span>
-            <span class="num"><span class="pill pill-pos">Clean so far</span></span>
-          </li>
-          <li class="feed-row">
-            <span class="tok"><span class="av av-3" aria-hidden="true">S</span><span class="tok-name">$SOGGYTOAST<small>4kPz…pump</small></span></span>
-            <span class="num">0:47</span><span class="num">$8.9k</span><span class="num">96</span>
-            <span class="num"><span class="pill pill-neg">1 flag</span></span>
-          </li>
-          <li class="feed-row">
-            <span class="tok"><span class="av av-4" aria-hidden="true">M</span><span class="tok-name">$MOONMOTH<small>2bWx…pump</small></span></span>
-            <span class="num">1:12</span><span class="num">$31.5k</span><span class="num">402</span>
-            <span class="num"><span class="pill pill-neg">2 flags</span></span>
-          </li>
+        <ul class="feed-rows" aria-label="Sample launches">
+          <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>7Hq3…pump</small></span></span><span class="num">0:09</span><span class="num">$13.8k</span><span class="num">61</span><span class="num"><span class="pill pill-neg">3 flags</span></span></div></li>
+          <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">T</span><span class="tok-name">$TOADSTOOL<small>9vRm…pump</small></span></span><span class="num">0:31</span><span class="num">$21.2k</span><span class="num">188</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
+          <li><div class="feed-row"><span class="tok"><span class="av av-3" aria-hidden="true">S</span><span class="tok-name">$SOGGYTOAST<small>4kPz…pump</small></span></span><span class="num">0:47</span><span class="num">$8.9k</span><span class="num">96</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
+          <li><div class="feed-row"><span class="tok"><span class="av av-4" aria-hidden="true">M</span><span class="tok-name">$MOONMOTH<small>2bWx…pump</small></span></span><span class="num">1:12</span><span class="num">$31.5k</span><span class="num">402</span><span class="num"><span class="pill pill-neg">2 flags</span></span></div></li>
+          <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">D</span><span class="tok-name">$DUSTBUNNY<small>8cLe…pump</small></span></span><span class="num">1:40</span><span class="num">$17.3k</span><span class="num">231</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
+          <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">C</span><span class="tok-name">$COLDBREW<small>6wHs…pump</small></span></span><span class="num">2:05</span><span class="num">$44.6k</span><span class="num">517</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
         </ul>
+        <div class="feed-foot" aria-hidden="true">
+          <span class="feed-reading">Reading <b data-k="reading">$LILPEBBLE</b></span>
+          <span class="feed-bar"><span data-k="bar"></span></span>
+          <span class="num" data-k="checks">7 of 7 checks</span>
+        </div>
       </div>
     </div>
   </section>
@@ -71,6 +61,7 @@
 
     <div class="state" data-reveal style="--i:0">
       <p class="state-word">Launched</p>
+      <p class="state-note"><b>The chart:</b> one green candle. Nothing to read&nbsp;yet.</p>
       <div class="copy" data-ui>
         <div class="row">
           <span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>Lil Pebble · 7Hq3…pump</small></span></span>
@@ -84,6 +75,7 @@
 
     <div class="state state-live" data-reveal style="--i:1">
       <p class="state-word">Flagged</p>
+      <p class="state-note"><b>The chart:</b> up 3× and climbing. <b>Block Zero:</b> three flags, all raised by&nbsp;0:09.</p>
       <div class="copy copy-live" data-ui id="live">
         <div class="row is-hover">
           <span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>Lil Pebble · 7Hq3…pump</small></span></span>
@@ -136,6 +128,7 @@
 
     <div class="state" data-reveal style="--i:2">
       <p class="state-word">Dumped</p>
+      <p class="state-note"><b>The chart:</b> finally red, 43 seconds after the last&nbsp;flag.</p>
       <div class="copy" data-ui>
         <div class="row">
           <span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>Peak $38.9k at 0:51, now down 91%</small></span></span>
@@ -153,51 +146,128 @@
       <div class="sheet" data-reveal>
         <h2 id="reads-title" class="head">What it reads</h2>
         <table class="menu">
-          <caption class="sr-only">Everything Block Zero checks on a new token</caption>
+          <caption class="sr-only">Everything Block Zero checks on a new token. Choose one to see it on a sample launch.</caption>
           <tbody>
             <tr class="group"><th colspan="2" scope="colgroup">At launch</th></tr>
-            <tr><th scope="row"><span class="item"><span>Mint authority</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can print more of the token after you&nbsp;buy.</span></th><td>block 0</td></tr>
-            <tr><th scope="row"><span class="item"><span>Freeze authority</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can freeze your tokens so you can’t&nbsp;sell.</span></th><td>block 0</td></tr>
-            <tr><th scope="row"><span class="item"><span>Bundled buys</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Wallets that bought in the creation slot, added up as one&nbsp;holder.</span></th><td>% of supply</td></tr>
-            <tr><th scope="row"><span class="item"><span>Snipers</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Bots that bought in the first three slots, and what they still&nbsp;hold.</span></th><td>count</td></tr>
+            <tr data-check="mint"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Mint authority</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can print more of the token after you&nbsp;buy.</span></th><td>block 0</td></tr>
+            <tr data-check="freeze"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Freeze authority</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can freeze your tokens so you can’t&nbsp;sell.</span></th><td>block 0</td></tr>
+            <tr data-check="bundled" class="is-on"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="true">Bundled buys</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Wallets that bought in the creation slot, added up as one&nbsp;holder.</span></th><td>% of supply</td></tr>
+            <tr data-check="snipers"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Snipers</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Bots that bought in the first three slots, and what they still&nbsp;hold.</span></th><td>count</td></tr>
             <tr class="group"><th colspan="2" scope="colgroup">Who’s holding</th></tr>
-            <tr><th scope="row"><span class="item"><span>Dev history</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Every token this wallet made before, and how fast it&nbsp;sold.</span></th><td>all launches</td></tr>
-            <tr><th scope="row"><span class="item"><span>Top holders</span><span class="leader" aria-hidden="true"></span></span><span class="desc">What the ten largest wallets hold, with the bonding curve left&nbsp;out.</span></th><td>live</td></tr>
-            <tr><th scope="row"><span class="item"><span>Wallets you track</span><span class="leader" aria-hidden="true"></span></span><span class="desc">Paste the wallets you follow and see the moment any of them&nbsp;buys.</span></th><td>your list</td></tr>
+            <tr data-check="dev"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Dev history</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Every token this wallet made before, and how fast it&nbsp;sold.</span></th><td>all launches</td></tr>
+            <tr data-check="top"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Top holders</button><span class="leader" aria-hidden="true"></span></span><span class="desc">What the ten largest wallets hold, with the bonding curve left&nbsp;out.</span></th><td>live</td></tr>
+            <tr data-check="track"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Wallets you track</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Paste the wallets you follow and see the moment any of them&nbsp;buys.</span></th><td>your list</td></tr>
             <tr class="group"><th colspan="2" scope="colgroup">Where it tells you</th></tr>
-            <tr><th scope="row"><span class="item"><span>In the app</span><span class="leader" aria-hidden="true"></span></span><span class="desc">A feed of every launch with its flags, newest&nbsp;first.</span></th><td>included</td></tr>
-            <tr><th scope="row"><span class="item"><span>Telegram</span><span class="leader" aria-hidden="true"></span></span><span class="desc">The same report in a chat, for launches that match your&nbsp;rules.</span></th><td>included</td></tr>
+            <tr data-check="app"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">In the app</button><span class="leader" aria-hidden="true"></span></span><span class="desc">A feed of every launch with its flags, newest&nbsp;first.</span></th><td>included</td></tr>
+            <tr data-check="telegram"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Telegram</button><span class="leader" aria-hidden="true"></span></span><span class="desc">The same report in a chat, for launches that match your&nbsp;rules.</span></th><td>included</td></tr>
           </tbody>
         </table>
+      </div>
+      <div class="demo" id="demo" data-ui aria-live="polite">
+        <div class="pane" data-check="mint">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Mint authority</span></p>
+          <div class="switch-row"><span>Dev can mint more</span><span class="switch"><span></span></span></div>
+          <p class="d-status is-ok">Revoked</p>
+          <p class="d-note">Revoked in the creation transaction, so the supply stays at 1,000,000,000.</p>
+        </div>
+        <div class="pane" data-check="freeze">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Freeze authority</span></p>
+          <div class="switch-row"><span>Dev can freeze holders</span><span class="switch"><span></span></span></div>
+          <p class="d-status is-ok">Revoked</p>
+          <p class="d-note">Nobody can lock your tokens in your wallet.</p>
+        </div>
+        <div class="pane is-active" data-check="bundled">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Bundled buys</span></p>
+          <div class="wallets" aria-hidden="true"><span style="--n:0"></span><span style="--n:1"></span><span style="--n:2"></span><span style="--n:3"></span><span style="--n:4"></span><span style="--n:5"></span><span style="--n:6"></span><span style="--n:7"></span><span style="--n:8"></span><span style="--n:9"></span><span style="--n:10"></span><span style="--n:11"></span><span style="--n:12"></span><span style="--n:13"></span><span style="--n:14"></span><span style="--n:15"></span><span style="--n:16"></span><span style="--n:17"></span><span style="--n:18"></span><span style="--n:19"></span><span style="--n:20"></span><span style="--n:21"></span><span style="--n:22"></span><span style="--n:23"></span></div>
+          <p class="d-status is-flag"><span class="num">41.2%</span> of supply</p>
+          <p class="d-note">24 wallets bought in the creation slot. Block Zero counts them as one holder.</p>
+        </div>
+        <div class="pane" data-check="snipers">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Snipers</span></p>
+          <div class="bars" aria-hidden="true"><span style="--h:1.6;--n:0"></span><span style="--h:1.2;--n:1"></span><span style="--h:0.9;--n:2"></span><span style="--h:0.8;--n:3"></span><span style="--h:0.7;--n:4"></span><span style="--h:0.6;--n:5"></span><span style="--h:0.5;--n:6"></span></div>
+          <p class="d-status"><span class="num">7</span> wallets, <span class="num">6.3%</span></p>
+          <p class="d-note">Bought in slots 1 to 3. Under 10% between them, so not a flag on its own.</p>
+        </div>
+        <div class="pane" data-check="dev">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Dev history</span></p>
+          <ul class="past">
+            <li style="--n:0"><span>$PEBBLEDASH</span><b>sold after 4 min</b></li>
+            <li style="--n:1"><span>$MOSSYROCK</span><b>sold after 7 min</b></li>
+            <li style="--n:2"><span>$GRAVELPIT</span><b>sold after 3 min</b></li>
+            <li style="--n:3"><span>$SANDCASTLE</span><b>sold after 9 min</b></li>
+            <li style="--n:4"><span>$COBBLESTONE</span><b>sold after 6 min</b></li>
+            <li style="--n:5" class="held"><span>$BOULDER</span><b>held 2 days</b></li>
+          </ul>
+          <p class="d-status is-flag"><span class="num">5</span> of <span class="num">6</span> sold inside 10&nbsp;min</p>
+        </div>
+        <div class="pane" data-check="top">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Top holders</span></p>
+          <div class="stack" aria-hidden="true"><span style="--w:9.8;--n:0"></span><span style="--w:7.2;--n:1"></span><span style="--w:6.9;--n:2"></span><span style="--w:6.1;--n:3"></span><span style="--w:5.8;--n:4"></span><span style="--w:5.6;--n:5"></span><span style="--w:4.9;--n:6"></span><span style="--w:4.4;--n:7"></span><span style="--w:4.1;--n:8"></span><span style="--w:3.6;--n:9"></span></div>
+          <p class="d-status is-flag"><span class="num">58.4%</span> in ten wallets</p>
+          <p class="d-note">The bonding curve is left out. Over 30% is a flag.</p>
+        </div>
+        <div class="pane" data-check="track">
+          <p class="d-head"><span class="d-tok">$LILPEBBLE</span><span>Wallets you track</span></p>
+          <ul class="tracked">
+            <li style="--n:0"><span>4Rf8…kQ2m</span><b>no buy</b></li>
+            <li style="--n:1"><span>9xLp…Ve7a</span><b>no buy</b></li>
+            <li style="--n:2"><span>2hWc…Tn5s</span><b>no buy</b></li>
+            <li style="--n:3"><span>7mKd…Pq1z</span><b>no buy</b></li>
+          </ul>
+          <p class="d-status"><span class="num">0</span> of <span class="num">40</span> bought</p>
+          <p class="d-note">None of the wallets you follow has touched it.</p>
+        </div>
+        <div class="pane" data-check="app">
+          <p class="d-head"><span class="d-tok">Feed</span><span>In the app</span></p>
+          <div class="mini-row"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>7Hq3…pump</small></span><span class="num">0:09</span><span class="pill pill-neg">3 flags</span></div>
+          <div class="mini-row"><span class="av av-2" aria-hidden="true">T</span><span class="tok-name">$TOADSTOOL<small>9vRm…pump</small></span><span class="num">0:31</span><span class="pill pill-pos">Clean so far</span></div>
+          <p class="d-note">Newest first. Open any row for its full report.</p>
+        </div>
+        <div class="pane" data-check="telegram">
+          <p class="d-head"><span class="d-tok">Telegram</span><span>Block Zero alerts</span></p>
+          <p class="typing" aria-hidden="true"><span></span><span></span><span></span></p>
+          <div class="msg">
+            <p class="msg-head">$LILPEBBLE · 3 flags</p>
+            <p>Bundled 41.2% in the creation slot.</p>
+            <p>Dev sold 5 of its 6 past tokens inside 10 min.</p>
+            <p>Top 10 hold 58.4%.</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="why" class="letter wrap grid" aria-labelledby="why-title">
-    <div class="letter-col">
+    <div class="letter-text">
       <svg class="letter-mark" viewBox="0 0 28 28" width="44" height="44" aria-hidden="true" data-reveal><circle cx="14" cy="14" r="14" fill="#456f3a"/><rect x="10.5" y="7.5" width="7" height="13" rx="3.5" fill="#e5e1d8"/></svg>
       <h2 id="why-title" class="head" data-reveal>Every mania has a first&nbsp;hour</h2>
-      <p data-reveal>Tulips in Haarlem in 1637. Mississippi shares on the rue Quincampoix in 1720. South Sea stock in London that same summer. In every print of those crowds, the people in the picture arrived after the first&nbsp;hour.</p>
+      <p data-reveal data-stage="mania">Tulips in Haarlem in 1637. Mississippi shares on the rue Quincampoix in 1720. South Sea stock in London that same summer. In every print of those crowds, the people in the picture arrived after the first&nbsp;hour.</p>
+    </div>
 
-      <figure class="mania" data-reveal>
-        <div class="mania-frame">
-          <img class="is-on" src="assets/quincampoix-1720.jpg" width="1400" height="990" alt="Engraving of a packed Paris street in 1720, crowds pressing between tall houses to trade shares" decoding="async" loading="lazy" data-cap="Rue Quincampoix, Paris, 1720. Engraving by Antoine Humblot.">
-          <img src="assets/south-sea-scheme-1721.jpg" width="1400" height="1118" alt="Hogarth’s satirical print of Londoners riding a merry-go-round of speculation beside a monument to the South Sea crash" decoding="async" loading="lazy" data-cap="The South Sea Scheme, London, 1721. Print by William Hogarth.">
-          <img src="assets/floras-mallewagen-1637.jpg" width="1400" height="1020" alt="Painting of Flora riding a wagon of fools loaded with tulips, followed by weavers who left their looms to trade bulbs" decoding="async" loading="lazy" data-cap="Flora’s Wagon of Fools, Haarlem, around 1637. Painting by Hendrik Gerritsz Pot.">
-        </div>
-        <figcaption data-k="cap">Rue Quincampoix, Paris, 1720. Engraving by Antoine Humblot.</figcaption>
-      </figure>
+    <aside class="letter-stage" aria-label="Pictures for this letter">
+      <div class="stage-frame" data-show="mania">
+        <figure class="mania">
+          <div class="mania-frame">
+            <img class="is-on" src="assets/quincampoix-1720.jpg" width="1400" height="990" alt="Engraving of a packed Paris street in 1720, crowds pressing between tall houses to trade shares" decoding="async" loading="lazy" data-cap="Rue Quincampoix, Paris, 1720. Engraving by Antoine Humblot.">
+            <img src="assets/south-sea-scheme-1721.jpg" width="1400" height="1118" alt="Hogarth’s satirical print of Londoners riding a merry-go-round of speculation beside a monument to the South Sea crash" decoding="async" loading="lazy" data-cap="The South Sea Scheme, London, 1721. Print by William Hogarth.">
+            <img src="assets/floras-mallewagen-1637.jpg" width="1400" height="1020" alt="Painting of Flora riding a wagon of fools loaded with tulips, followed by weavers who left their looms to trade bulbs" decoding="async" loading="lazy" data-cap="Flora’s Wagon of Fools, Haarlem, around 1637. Painting by Hendrik Gerritsz Pot.">
+          </div>
+          <figcaption data-k="cap">Rue Quincampoix, Paris, 1720. Engraving by Antoine Humblot.</figcaption>
+        </figure>
+        <figure class="tape">
+          <div class="tape-frame">
+            <video src="assets/tape-delay.mp4" poster="assets/tape-delay-poster.jpg" width="640" height="360" muted loop playsinline autoplay preload="metadata" aria-label="Film of the tape delay board, the ticker tape crawling, and the trading floor of the New York Stock Exchange seen from above"></video>
+          </div>
+          <figcaption>The tape delay board, the ticker and the floor of the New York Stock Exchange, from the exchange’s film The Big&nbsp;Board.</figcaption>
+        </figure>
+      </div>
+    </aside>
 
-      <p data-reveal>Memecoins run the same play in minutes. Thousands of tokens launch on Solana every day, and most of what decides a launch happens in its first block: who bought, through how many wallets, and what the dev kept the power to&nbsp;do.</p>
-      <p data-reveal>The chart shows none of that. It shows price, and price is the last thing to move. In October 1929 the ticker on the New York floor ran hours behind the trading. A chart on a new token is the same tape, running&nbsp;late.</p>
-
-      <figure class="tape" data-reveal>
-        <video src="assets/tape-delay.mp4" poster="assets/tape-delay-poster.jpg" width="640" height="360" muted loop playsinline autoplay preload="metadata" aria-label="Film of the tape delay board, the ticker tape crawling, and the trading floor of the New York Stock Exchange seen from above"></video>
-        <figcaption>The tape delay board, the ticker and the floor of the New York Stock Exchange, from the exchange’s film The Big&nbsp;Board.</figcaption>
-      </figure>
-
-      <p data-reveal>So we built what we wanted on our own screens: a reader that opens every launch the moment it lands on chain and says, in plain words, what it found. It doesn’t trade for you, and it never asks for your keys. It reads, so you can&nbsp;decide.</p>
-      <p data-reveal>We’re letting people in a small group at a time. If you trade launches, we’d like you in&nbsp;one.</p>
+    <div class="letter-text letter-rest">
+      <p data-reveal data-stage="mania">Memecoins run the same play in minutes. Thousands of tokens launch on Solana every day, and most of what decides a launch happens in its first block: who bought, through how many wallets, and what the dev kept the power to&nbsp;do.</p>
+      <p data-reveal data-stage="tape">The chart shows none of that. It shows price, and price is the last thing to move. In October 1929 the ticker on the New York floor ran hours behind the trading. A chart on a new token is the same tape, running&nbsp;late.</p>
+      <p data-reveal data-stage="tape">So we built what we wanted on our own screens: a reader that opens every launch the moment it lands on chain and says, in plain words, what it found. It doesn’t trade for you, and it never asks for your keys. It reads, so you can&nbsp;decide.</p>
+      <p data-reveal data-stage="tape">We’re letting people in a small group at a time. If you trade launches, we’d like you in&nbsp;one.</p>
       <p class="sign" data-reveal><em>The Block Zero team</em><span>Building it now</span></p>
     </div>
   </section>
@@ -223,7 +293,7 @@
       <div class="stage-inner" data-state="1">
         <div class="frag frag-1" data-ui>
           <p class="frag-title">Read a token</p>
-          <div class="paste"><span class="paste-val">7Hq3wGx9Lp2RkVt5nC8sYbD4eMfJq1aZu6hTiWpump</span><span class="ui-btn ui-btn-dark">Read</span></div>
+          <div class="paste"><span class="paste-val"><span class="typed">7Hq3wGx9Lp2RkVt5nC8sYbD4eMfJq1aZu6hTiWpump</span></span><span class="ui-btn ui-btn-dark read-btn">Read</span></div>
           <div class="toggle-row"><span>Watch every new launch</span><span class="toggle is-on"><span></span></span></div>
           <ul class="sources">
             <li><span>pump.fun</span><span class="num">on</span></li>
@@ -245,6 +315,7 @@
         </div>
         <div class="frag frag-3" data-ui>
           <p class="frag-title">Telegram <small>Block Zero alerts</small></p>
+          <p class="typing" aria-hidden="true"><span></span><span></span><span></span></p>
           <div class="msg">
             <p class="msg-head">$LILPEBBLE · 3 flags</p>
             <p>Bundled 41.2% in the creation slot.</p>

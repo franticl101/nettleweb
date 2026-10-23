@@ -20,3 +20,10 @@
 	for = "/fonts/*"
 	[headers.values]
 		Cache-Control = "public, max-age=31536000, immutable"
+
+# jsoncut/ holds the JsonCut job configs and their source media; it is not part of the site
+[[redirects]]
+	from = "/jsoncut/*"
+	to = "/"
+	status = 404
+	force = true
