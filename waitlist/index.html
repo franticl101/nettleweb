@@ -6,7 +6,10 @@
 <title>Block Zero: read a memecoin launch before you buy</title>
 <meta name="description" content="Block Zero reads each new Solana token in its first seconds: who holds it, who bundled it, and what the dev can still do. Join the waitlist.">
 <meta name="theme-color" content="#e5e1d8">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/hero-reel-poster.jpg" as="image" fetchpriority="high">
 <link rel="stylesheet" href="style.css">
 <script>document.documentElement.classList.add('js')</script>
 </head>
@@ -33,7 +36,7 @@
     </div>
 
     <div class="hero-panel" data-rise style="--i:4">
-      <video class="hero-reel" src="assets/hero-reel.mp4" poster="assets/hero-reel-poster.jpg" width="1080" height="1080" muted loop playsinline preload="auto" aria-label="Film of a sample launch being read: three flags arrive within nine seconds, the price keeps climbing, then the dev sells at 0:52"></video>
+      <video class="hero-reel" src="assets/hero-reel.mp4" poster="assets/hero-reel-poster.jpg" width="1080" height="1080" muted loop playsinline preload="none" aria-label="Film of a sample launch being read: three flags arrive within nine seconds, the price keeps climbing, then the dev sells at 0:52"></video>
     </div>
   </section>
 
@@ -128,17 +131,22 @@
         <h2 id="reads-title" class="head">What it reads</h2>
         <table class="menu">
           <caption class="sr-only">Everything Block Zero checks on a new token. Choose one to see it on a sample launch.</caption>
+          <thead class="sr-only"><tr><th scope="col">Check</th><th scope="col">Detail</th></tr></thead>
           <tbody>
-            <tr class="group"><th colspan="2" scope="colgroup">At launch</th></tr>
+            <tr class="group"><th colspan="2" scope="rowgroup">At launch</th></tr>
             <tr data-check="mint"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Mint authority</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can print more of the token after you&nbsp;buy.</span></th><td>block 0</td></tr>
             <tr data-check="freeze"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Freeze authority</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Whether the dev can freeze your tokens so you can’t&nbsp;sell.</span></th><td>block 0</td></tr>
             <tr data-check="bundled" class="is-on"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="true">Bundled buys</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Wallets that bought in the creation slot, added up as one&nbsp;holder.</span></th><td>% of supply</td></tr>
             <tr data-check="snipers"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Snipers</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Bots that bought in the first three slots, and what they still&nbsp;hold.</span></th><td>count</td></tr>
-            <tr class="group"><th colspan="2" scope="colgroup">Who’s holding</th></tr>
+          </tbody>
+          <tbody>
+            <tr class="group"><th colspan="2" scope="rowgroup">Who’s holding</th></tr>
             <tr data-check="dev"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Dev history</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Every token this wallet made before, and how fast it&nbsp;sold.</span></th><td>all launches</td></tr>
             <tr data-check="top"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Top holders</button><span class="leader" aria-hidden="true"></span></span><span class="desc">What the ten largest wallets hold, with the bonding curve left&nbsp;out.</span></th><td>live</td></tr>
             <tr data-check="track"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Wallets you track</button><span class="leader" aria-hidden="true"></span></span><span class="desc">Paste the wallets you follow and see the moment any of them&nbsp;buys.</span></th><td>your list</td></tr>
-            <tr class="group"><th colspan="2" scope="colgroup">Where it tells you</th></tr>
+          </tbody>
+          <tbody>
+            <tr class="group"><th colspan="2" scope="rowgroup">Where it tells you</th></tr>
             <tr data-check="app"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">In the app</button><span class="leader" aria-hidden="true"></span></span><span class="desc">A feed of every launch with its flags, newest&nbsp;first.</span></th><td>included</td></tr>
             <tr data-check="telegram"><th scope="row"><span class="item"><button type="button" class="pick" aria-controls="demo" aria-pressed="false">Telegram</button><span class="leader" aria-hidden="true"></span></span><span class="desc">The same report in a chat, for launches that match your&nbsp;rules.</span></th><td>included</td></tr>
           </tbody>

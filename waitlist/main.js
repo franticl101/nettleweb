@@ -189,6 +189,7 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
     pick.addEventListener('click', () => show(r.dataset.check, true));
     pick.addEventListener('focus', () => show(r.dataset.check, true));
     r.addEventListener('mouseenter', () => { if (fine.matches) show(r.dataset.check, true); });
+    r.addEventListener('click', (e) => { if (!e.target.closest('.pick')) show(r.dataset.check, true); });
   }
   field.addEventListener('mouseenter', () => { hovering = true; });
   field.addEventListener('mouseleave', () => { hovering = false; });
@@ -233,7 +234,6 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   }
 
   if (reduced) { film.removeAttribute('autoplay'); film.pause(); }
-  imgs.forEach((img) => { img.loading = 'eager'; });
   if ('IntersectionObserver' in window) {
     const pick = new IntersectionObserver((entries) => {
       for (const e of entries) if (e.isIntersecting) frame.dataset.show = e.target.dataset.stage;
@@ -247,18 +247,20 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   wide.addEventListener('change', sync);
 
   // a reel rendered with JsonCut (waitlist/jsoncut/render.mjs) takes the crossfade's place once it exists
+  const prints = () => imgs.forEach((img) => { img.loading = 'eager'; });
   fetch('assets/reels.json', { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : {})).then((reels) => {
     const r = reels?.mania;
-    if (!r?.src) return;
+    if (!r?.src) return prints();
     reel = document.createElement('video');
-    Object.assign(reel, { src: r.src, muted: true, loop: true, playsInline: true, preload: 'metadata' });
+    const src = r.srcSmall && innerWidth < 700 ? r.srcSmall : r.src;
+    Object.assign(reel, { src, muted: true, loop: true, playsInline: true, preload: 'metadata' });
     if (r.poster) reel.poster = r.poster;
     reel.setAttribute('aria-label', 'Film of the tulip mania in 1637, the rue Quincampoix in 1720 and the South Sea scheme in 1721, then a sample launch read by Block Zero in nine seconds');
     mania.append(reel);
     imgs.forEach((img) => { img.hidden = true; });
     cap.textContent = 'From 1637 to now in sixteen seconds, cut from the prints and film credited below.';
     sync();
-  }).catch(() => {});
+  }).catch(prints);
 })();
 
 // ---------- the replay: one example launch, its first 120 seconds ----------
@@ -348,7 +350,13 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 // ---------- how you use it: the statement nearest the middle drives the fragment ----------
 (() => {
   const steps = $$('.step'), stage = $('.stage-inner');
-  if (!steps.length || !stage || !('IntersectionObserver' in window)) return;
+  if (!steps.length || !stage) return;
+  const frags = [1, 2, 3].map((n) => $(`.frag-${n}`, stage));
+  const short = matchMedia('(max-width: 899px) and (max-height: 700px)');
+  const place = () => frags.forEach((f, i) => (short.matches ? steps[i].append(f) : stage.append(f)));
+  place();
+  short.addEventListener('change', place);
+  if (!('IntersectionObserver' in window)) return;
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (!e.isIntersecting) continue;
@@ -386,15 +394,17 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const reel = $('.hero-reel');
   if (!reel || reduced) return;
   // the first time it plays it starts with the report already read, so the first screen is never half empty
-  let seen = true, started = false;
+  // and it waits for the page to load, so on a slow phone the poster is not sharing the line with it
+  let seen = true, started = false, loaded = document.readyState === 'complete';
   const sync = () => {
+    if (!loaded) return;
     if (!seen || document.visibilityState !== 'visible') return reel.pause();
     if (!started) { started = true; reel.currentTime = 3; }
     reel.play().catch(() => {});
   };
   if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(); }, { threshold: 0.2 }).observe(reel);
   document.addEventListener('visibilitychange', sync);
-  sync();
+  if (loaded) sync(); else addEventListener('load', () => { loaded = true; sync(); }, { once: true });
 })();
 
 // ---------- joining: every "Join the waitlist" lands in the email field ----------

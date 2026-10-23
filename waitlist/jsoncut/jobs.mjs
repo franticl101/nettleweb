@@ -206,7 +206,7 @@ export const jobs = [
     type: 'video',
     // shown in the letter on the page, in place of the crossfade (listed in assets/reels.json)
     output: 'jsoncut/out/mania-reel.mp4',
-    web: { src: 'assets/mania-reel.mp4', width: 1080, crf: 27, poster: 'assets/mania-reel-poster.jpg', posterAt: 1.4, slot: 'mania' },
+    web: { src: 'assets/mania-reel.mp4', width: 1080, crf: 27, poster: 'assets/mania-reel-poster.jpg', posterAt: 1.4, slot: 'mania', small: { width: 720, crf: 28 } },
     config: {
       width: 1440,
       height: 1080,

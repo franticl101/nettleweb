@@ -100,7 +100,7 @@ p { text-wrap: pretty; }
 /* text in the left half sits as far inside its column as the panels' contents sit inside theirs on the right, so each pair is centred on the page */
 .hero-col, .how-title, .steps, .faq-index, .letter-text { padding-left: var(--inset); }
 .hero-col { grid-column: 2 / span 5; }
-.hero h1 { font-size: clamp(2.5rem, 1rem + 4vw, 4.6rem); max-width: 9.4em; }
+.hero h1 { font-size: clamp(2.5rem, 5.1vw, 4.6rem); max-width: 9.4em; }
 .hero-sub { margin-top: 32px; max-width: 36ch; }
 .actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
 .hero-panel { grid-column: 7 / span 5; padding-right: var(--inset); }
@@ -200,7 +200,12 @@ p { text-wrap: pretty; }
 [data-ui] .scrub { display: grid; grid-template-columns: auto minmax(0, 1fr) 44px; grid-template-areas: "btn label clock" "btn range clock"; column-gap: 14px; align-items: center; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--ui-rule); }
 [data-ui] .scrub .ui-btn { grid-area: btn; min-width: 68px; }
 [data-ui] .scrub-label { grid-area: label; font-size: 13px; color: var(--ui-muted); }
-[data-ui] .scrub input { grid-area: range; width: 100%; margin: 4px 0 0; accent-color: var(--accent); cursor: pointer; }
+[data-ui] .scrub input { grid-area: range; width: 100%; height: 28px; margin: 2px 0 0; background: none; cursor: pointer; -webkit-appearance: none; appearance: none; }
+[data-ui] .scrub input::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: var(--ui-rule); }
+[data-ui] .scrub input::-moz-range-track { height: 6px; border-radius: 3px; background: var(--ui-rule); }
+[data-ui] .scrub input::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent); }
+[data-ui] .scrub input::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -8px; border-radius: 50%; background: var(--accent); border: 3px solid var(--ui-surface); box-shadow: 0 0 0 1px var(--accent); }
+[data-ui] .scrub input::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); border: 3px solid var(--ui-surface); box-shadow: 0 0 0 1px var(--accent); }
 [data-ui] .scrub output { grid-area: clock; font-weight: 600; text-align: right; }
 
 /* ---------- what it reads ---------- */
@@ -213,7 +218,7 @@ p { text-wrap: pretty; }
 .menu th, .menu td { padding: 0; font-weight: 400; text-align: left; vertical-align: top; }
 .menu tr + tr th, .menu tr + tr td { padding-top: 26px; }
 .menu .group th { font-weight: 600; padding-top: 60px; }
-.menu tr:first-child th { padding-top: 0; }
+.menu tbody:first-of-type tr:first-child th { padding-top: 0; }
 .menu .group + tr th, .menu .group + tr td { padding-top: 18px; }
 .menu .item { display: flex; align-items: baseline; gap: 8px; }
 .menu .leader { flex: 1; min-width: 24px; border-bottom: 4px dotted var(--muted); transform: translateY(-0.3em); }
@@ -372,6 +377,7 @@ p { text-wrap: pretty; }
   .demo { position: static; margin: 24px 12px 0; min-height: 0; padding: 18px; }
   .top-join { grid-column: 7 / -1; margin-right: 0; }
   .hero { min-height: 0; padding-block: calc(18svh - var(--top)) 72px; row-gap: 48px; }
+  .hero h1 { font-size: min(3.25rem, 11.4vw); }
   .hero-sub { margin-top: 24px; }
   .state { grid-template-columns: minmax(0, 1fr); }
   .state + .state { margin-top: 72px; }
@@ -423,6 +429,39 @@ p { text-wrap: pretty; }
   [data-ui] .chart { grid-template-rows: auto 120px auto; }
   [data-ui] .scrub { grid-template-columns: auto minmax(0, 1fr) 40px; }
   [data-ui] .row .pointer { left: 60%; top: 26px; }
+}
+
+/* ---------- touch: thumb-sized targets ---------- */
+@media (pointer: coarse) {
+  .brand, .top-join, .actions .link { padding-block: 12px; margin-block: -12px; }
+  .foot-line a { padding: 15px 10px; margin: -15px -10px; }
+  .foot-line nav { gap: 4px 24px; }
+  [data-ui] .scrub .ui-btn { height: 44px; min-width: 76px; }
+  [data-ui] .scrub input { height: 44px; }
+  .menu .pick { padding-block: 9px; margin-block: -9px; }
+  .menu tr[data-check] { cursor: pointer; }
+  .faq-q { padding-block: 11px; }
+  .faq-list li + li { margin-top: 4px; }
+  .faq-q::before { top: calc(11px + 0.75em - 4px); }
+}
+
+/* ---------- short screens (small phones, phones on their side): the steps are not pinned;
+   each fragment sits under its own statement (main.js moves it there) ---------- */
+@media (max-width: 899px) and (max-height: 700px) {
+  .stage { display: none; }
+  .step { min-height: 0; padding-block: 32px; }
+  .step .frag { opacity: 1; transform: none; margin-top: 20px; }
+  /* on its side a full-width square or 4:3 frame is taller than the screen */
+  .hero-reel { width: min(100%, 86svh); }
+  .letter-stage { max-width: calc(76svh * 4 / 3); }
+}
+/* phones on their side: the reel sits beside the headline, as on desktop */
+@media (min-width: 640px) and (max-width: 899px) and (max-height: 500px) {
+  .hero { min-height: calc(100svh - var(--top)); padding-block: 8px 32px; }
+  .hero-col { grid-column: 1 / span 6; }
+  .hero-panel { grid-column: 7 / -1; }
+  .hero h1 { font-size: min(3.25rem, 6.2vw); }
+  .hero-reel { width: min(100%, calc(100svh - var(--top) - 40px)); margin-left: auto; }
 }
 
 /* ---------- motion: content stays visible without script ---------- */
