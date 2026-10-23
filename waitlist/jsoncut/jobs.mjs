@@ -69,9 +69,8 @@ const nineSeconds = {
 
 const print = (file, zoomDirection) => ({ type: 'image', path: `@media/${file}`, resizeMode: 'cover', zoomDirection, zoomAmount: 0.12 });
 
-// The sample launch read in one square: flags arrive, the chart climbs and dumps. With the end card it
-// closes on the page's headline and button (the post for X and Telegram); without it, it loops on the
-// dump (the hero, which already has the headline and button beside it).
+// The sample launch read in one square: flags arrive, the chart climbs and dumps, and with the end card
+// it closes on the page's headline and button (the post for X and Telegram).
 const launchLayer = ({ endCard, duration }) => ({
   type: 'html',
   html: `<main>
@@ -134,8 +133,66 @@ const launchLayer = ({ endCard, duration }) => ({
     @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
     @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
     @keyframes draw{to{stroke-dashoffset:0}}
-    @keyframes show{to{opacity:1}}@keyframes hide{to{opacity:0}}@keyframes out{to{opacity:0}}@keyframes away{to{opacity:0;transform:translateY(-28px)}}
-    ${endCard ? '' : 'main{padding:100px 110px}.row{margin-top:56px}ul{font-size:28px}li{padding:13px 0}figure{margin-top:60px}'}`,
+    @keyframes show{to{opacity:1}}@keyframes hide{to{opacity:0}}@keyframes out{to{opacity:0}}@keyframes away{to{opacity:0;transform:translateY(-28px)}}`,
+  googleFonts: ['Archivo'],
+  animated: true,
+  duration,
+  width: 1080,
+  height: 1080,
+});
+
+// The hero's version of the same read: no end card (the headline and button sit beside it on the page),
+// fewer and larger pieces so it stays readable when the square is shown at phone width, and it loops
+// on the dump.
+const heroLayer = ({ duration }) => ({
+  type: 'html',
+  html: `<main>
+    <header>${mark(48)}<span>Block Zero</span><em>Sample launch</em></header>
+    <section class="row">
+      <span class="av">L</span><span class="name">$LILPEBBLE<small>7Hq3…pump</small></span>
+      <span class="pill wait">Reading</span><span class="pill flag">3 flags</span>
+    </section>
+    <ul>
+      <li style="--d:1.0s">Mint and freeze <b>Revoked</b></li>
+      <li class="f" style="--d:1.6s">Bundled at launch <b>41.2%</b></li>
+      <li class="f" style="--d:2.2s">Dev wallet <b>5 of 6 sold</b></li>
+      <li class="f" style="--d:2.8s">Top 10 holders <b>58.4%</b></li>
+    </ul>
+    <figure>
+      <svg viewBox="0 0 840 220" width="888" height="232">
+        <line x1="0" x2="840" y1="210" y2="210" stroke="#d6cfc2" stroke-width="2"/>
+        <path class="up" d="M0 196 L60 170 L160 150 L260 120 L360 76 L364 30" fill="none" stroke="${GREEN}" stroke-width="6" stroke-linejoin="round"/>
+        <path class="down" d="M364 30 L372 120 L400 182 L560 196 L840 203" fill="none" stroke="${RED}" stroke-width="6" stroke-linejoin="round"/>
+        <line class="sell" x1="364" x2="364" y1="10" y2="210" stroke="${RED}" stroke-width="2.5" stroke-dasharray="9 9"/>
+      </svg>
+      <figcaption><span class="climb">Price still climbing at 0:51</span><span class="dump">Dev sold at 0:52</span></figcaption>
+    </figure>
+  </main>`,
+  css: `html,body{margin:0;background:${BONE};color:${INK};font-family:Archivo,sans-serif}
+    main{position:absolute;inset:0;padding:80px 96px;animation:out .8s ease ${duration - 0.8}s forwards}
+    header{display:flex;align-items:center;gap:16px;font-size:36px;font-weight:600;animation:rise .7s cubic-bezier(.22,1,.36,1) both}
+    header em{margin-left:auto;font-style:normal;font-weight:400;font-size:28px;color:${MUTED}}
+    .row{position:relative;display:grid;grid-template-columns:72px 1fr auto;gap:24px;align-items:center;margin-top:48px;padding:24px 30px;background:#f3f2ef;border:3px solid #d6cfc2;border-radius:14px;font-size:40px;animation:rise .7s cubic-bezier(.22,1,.36,1) .4s both}
+    .av{width:72px;height:72px;border-radius:50%;background:#dfe8d6;display:grid;place-items:center;font-weight:600}
+    .name{font-weight:600;line-height:1.1}.row small{display:block;font-size:28px;font-weight:400;color:${MUTED}}
+    .pill{grid-column:3;grid-row:1;justify-self:end;padding:8px 18px;border-radius:8px;font-size:30px;font-weight:600}
+    .wait{background:#e8e6e1;color:${MUTED};animation:hide .12s linear 3.15s forwards}
+    .flag{background:#f6e1da;color:${RED};animation:pop .4s cubic-bezier(.22,1,.36,1) 3.3s both}
+    ul{list-style:none;margin:16px 0 0;padding:0 30px;font-size:36px;color:${MUTED}}
+    li{display:flex;justify-content:space-between;padding:18px 0;border-bottom:3px solid #e0dbd1;animation:rise .5s cubic-bezier(.22,1,.36,1) var(--d) both}
+    li b{color:${INK};font-weight:400}li.f b{color:${RED};font-weight:600}
+    figure{margin:40px 0 0;animation:rise .6s cubic-bezier(.22,1,.36,1) 3.5s both}
+    .up{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.4s cubic-bezier(.33,1,.68,1) 3.8s forwards}
+    .down{stroke-dasharray:720;stroke-dashoffset:720;animation:draw 1s cubic-bezier(.55,.06,.68,.19) 6.4s forwards}
+    .sell{opacity:0;animation:show .2s linear 6.3s forwards}
+    figcaption{position:relative;height:44px;margin-top:12px;font-size:32px}
+    figcaption span{position:absolute;left:0}
+    .climb{color:${GREEN};opacity:0;animation:show .3s linear 4.4s forwards,hide .2s linear 6.3s forwards}
+    .dump{color:${RED};font-weight:600;opacity:0;animation:show .2s linear 6.4s forwards}
+    @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+    @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    @keyframes show{to{opacity:1}}@keyframes hide{to{opacity:0}}@keyframes out{to{opacity:0}}`,
   googleFonts: ['Archivo'],
   animated: true,
   duration,
@@ -182,10 +239,10 @@ export const jobs = [
   {
     name: 'hero-reel',
     type: 'video',
-    // the same read without the end card, looping at the top of the page beside the headline
+    // the hero's version of the same read, looping at the top of the page beside the headline
     output: 'jsoncut/out/hero-reel.mp4',
     web: { src: 'assets/hero-reel.mp4', width: 1080, crf: 27, poster: 'assets/hero-reel-poster.jpg', posterAt: 8.4 },
-    config: { width: 1080, height: 1080, fps: 30, format: 'mp4', clips: [{ duration: 10, transition: null, layers: [launchLayer({ endCard: false, duration: 10 })] }] },
+    config: { width: 1080, height: 1080, fps: 30, format: 'mp4', clips: [{ duration: 10, transition: null, layers: [heroLayer({ duration: 10 })] }] },
   },
 ];
 

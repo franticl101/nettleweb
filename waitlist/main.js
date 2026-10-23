@@ -389,7 +389,7 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   let seen = true, started = false;
   const sync = () => {
     if (!seen || document.visibilityState !== 'visible') return reel.pause();
-    if (!started) { started = true; reel.currentTime = 3.3; }
+    if (!started) { started = true; reel.currentTime = 3; }
     reel.play().catch(() => {});
   };
   if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(); }, { threshold: 0.2 }).observe(reel);
