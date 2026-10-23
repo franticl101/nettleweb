@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 deno.lock
 .taste-skill/
+waitlist/jsoncut/out/mania-reel.mp4

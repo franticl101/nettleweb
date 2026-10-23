@@ -256,7 +256,7 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
     reel.setAttribute('aria-label', 'Film of the tulip mania in 1637, the rue Quincampoix in 1720 and the South Sea scheme in 1721, then a sample launch read by Block Zero in nine seconds');
     mania.append(reel);
     imgs.forEach((img) => { img.hidden = true; });
-    cap.textContent = 'From 1637 to now in sixteen seconds. Cut with JsonCut from the prints and film credited below.';
+    cap.textContent = 'From 1637 to now in sixteen seconds, cut from the prints and film credited below.';
     sync();
   }).catch(() => {});
 })();
@@ -379,6 +379,24 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
     q.addEventListener('focus', () => { if (wide.matches) select(li); });
     q.addEventListener('mouseenter', () => { if (wide.matches) select(li); });
   });
+})();
+
+// ---------- the launch reel beside the signup: plays while seen, and a click goes to the email field ----------
+(() => {
+  const reel = $('.join-reel video');
+  if (!reel) return;
+  reel.addEventListener('click', () => $('#email')?.focus());
+  if (reduced || !('IntersectionObserver' in window)) return;
+  // the first time it plays, start where the report is already filling in; after that it loops from the top
+  let started = false;
+  const sync = (on) => {
+    if (!on || document.visibilityState !== 'visible') return reel.pause();
+    if (!started) { started = true; reel.currentTime = 3.6; }
+    reel.play().catch(() => {});
+  };
+  let seen = false;
+  new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(seen); }, { threshold: 0.3 }).observe(reel);
+  document.addEventListener('visibilitychange', () => sync(seen));
 })();
 
 // ---------- joining: every "Join the waitlist" lands in the email field ----------

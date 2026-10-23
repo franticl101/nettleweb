@@ -1,6 +1,8 @@
 // JsonCut jobs for the Block Zero waitlist (https://api.jsoncut.com, see .claude/skills/jsoncut).
-// `node jobs.mjs` prints every job as JSON. render.mjs uploads the files named "@media/…",
-// validates each config, renders it and downloads the result to `output`.
+// `node jobs.mjs` prints every job as JSON. Two ways to turn them into video:
+//   render.mjs        sends them to the JsonCut API (needs JSONCUT_API_KEY)
+//   render-local.mjs  renders them here with Chrome and ffmpeg, no API
+// Either one saves the full-size master to `output` and a web copy plus poster frame to `web`.
 
 const INK = '#2a1d17', MUTED = '#615148', BONE = '#e5e1d8', GREEN = '#456f3a', RED = '#7f2219';
 
@@ -47,22 +49,23 @@ const nineSeconds = {
     .row{display:grid;grid-template-columns:64px 1fr 120px 150px;gap:24px;align-items:center;padding:26px 30px;background:#f3f2ef;border:2px solid #d6cfc2;border-radius:12px;font-size:34px;animation:rise .8s cubic-bezier(.22,1,.36,1) .4s both}
     .av{width:64px;height:64px;border-radius:50%;background:#dfe8d6;display:grid;place-items:center;font-weight:600}
     .name{font-weight:600}.row small{display:block;font-size:24px;font-weight:400;color:${MUTED}}
-    .age{text-align:right}.age b{font-weight:400;font-variant-numeric:tabular-nums}
+    .age{text-align:right}.age b{font-weight:400;font-variant-numeric:tabular-nums;counter-reset:s var(--s);animation:count 2.07s linear .1s both}.age b::after{content:'0:0' counter(s)}
     .pill{justify-self:end;padding:8px 16px;border-radius:6px;background:#f6e1da;color:${RED};font-size:28px;font-weight:600;animation:pop .4s cubic-bezier(.22,1,.36,1) 2.2s both}
     ul{list-style:none;margin:28px 0 0;padding:0 30px;font-size:32px;color:${MUTED}}
     li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:2px solid #d6cfc2;animation:rise .6s cubic-bezier(.22,1,.36,1) var(--d) both}
     li b{color:${RED}}
     footer{position:absolute;left:120px;bottom:90px;display:flex;gap:18px;align-items:center;font-size:40px;font-weight:600;animation:rise .8s cubic-bezier(.22,1,.36,1) 2.6s both}
     @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
-    @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}`,
-  // the age counts 0:00 to 0:09 while the flags arrive
+    @keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+    @property --s{syntax:'<integer>';inherits:false;initial-value:0}
+    @keyframes count{from{--s:0}to{--s:9}}`,
+  // the age counts 0:00 to 0:09 (a CSS counter, so a renderer can seek it frame by frame)
   googleFonts: ['Archivo'],
   animated: true,
   duration: 4.2,
   width: 1440,
   height: 1080,
 };
-nineSeconds.html += `<script>(()=>{const c=document.querySelector('.clock');let s=0;c.textContent='0:00';const t=setInterval(()=>{s++;c.textContent='0:0'+s;if(s>=9)clearInterval(t);},230);})()</script>`;
 
 const print = (file, zoomDirection) => ({ type: 'image', path: `@media/${file}`, resizeMode: 'cover', zoomDirection, zoomAmount: 0.12 });
 
@@ -70,9 +73,9 @@ export const jobs = [
   {
     name: 'mania-reel',
     type: 'video',
-    // shown in the letter on the page, in place of the crossfade, once it exists
-    output: 'assets/mania-reel.mp4',
-    reel: { slot: 'mania', poster: 'assets/mania-reel-poster.jpg', posterAt: 1.2 },
+    // shown in the letter on the page, in place of the crossfade (listed in assets/reels.json)
+    output: 'jsoncut/out/mania-reel.mp4',
+    web: { src: 'assets/mania-reel.mp4', width: 1080, crf: 27, poster: 'assets/mania-reel-poster.jpg', posterAt: 1.4, slot: 'mania' },
     config: {
       width: 1440,
       height: 1080,
@@ -98,8 +101,9 @@ export const jobs = [
   {
     name: 'launch-reel',
     type: 'video',
-    // a square clip for posting the waitlist on X and Telegram; not used on the page
+    // a square clip for posting the waitlist on X and Telegram; the web copy plays beside the signup
     output: 'jsoncut/out/launch-reel.mp4',
+    web: { src: 'assets/launch-reel.mp4', width: 720, crf: 27, poster: 'assets/launch-reel-poster.jpg', posterAt: 10.4 },
     config: {
       width: 1080,
       height: 1080,
@@ -151,7 +155,7 @@ export const jobs = [
                 .av{width:56px;height:56px;border-radius:50%;background:#dfe8d6;display:grid;place-items:center;font-weight:600}
                 .name{font-weight:600}.row small{display:block;font-size:22px;font-weight:400;color:${MUTED}}
                 .pill{grid-column:3;grid-row:1;justify-self:end;padding:6px 14px;border-radius:6px;font-size:24px;font-weight:600}
-                .wait{background:#e8e6e1;color:${MUTED};animation:hide .2s linear 3.4s forwards}
+                .wait{background:#e8e6e1;color:${MUTED};animation:hide .12s linear 3.25s forwards}
                 .flag{background:#f6e1da;color:${RED};animation:pop .4s cubic-bezier(.22,1,.36,1) 3.4s both}
                 ul{list-style:none;margin:14px 0 0;padding:0 24px;font-size:26px;color:${MUTED}}
                 li{display:flex;justify-content:space-between;padding:10px 0;border-bottom:2px solid #e0dbd1;animation:rise .5s cubic-bezier(.22,1,.36,1) var(--d) both}

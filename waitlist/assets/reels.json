@@ -1,1 +1,8 @@
-{}
+{
+  "mania": {
+    "src": "assets/mania-reel.mp4",
+    "poster": "assets/mania-reel-poster.jpg",
+    "renderedWith": "render-local.mjs (JsonCut job format, rendered without the API)",
+    "renderedAt": "2026-10-23T19:36:55.492Z"
+  }
+}

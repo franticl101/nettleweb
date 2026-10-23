@@ -3,14 +3,13 @@
 //
 //   JSONCUT_API_KEY=jc_live_… node waitlist/jsoncut/render.mjs [job-name …]
 //
-// A reel the page shows (mania-reel) is listed in assets/reels.json with its poster frame, and the
-// page swaps it in for the in-page animation it stands for. Run from anywhere; paths are resolved
-// against the waitlist folder.
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+// finish.mjs then makes the web copy and poster each job names, and lists page reels in
+// assets/reels.json. Run from anywhere; paths are resolved against the waitlist folder.
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { spawnSync } from 'node:child_process';
 import { jobs } from './jobs.mjs';
+import { publish } from './finish.mjs';
 
 const API = 'https://api.jsoncut.com/api/v1';
 const site = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -57,8 +56,6 @@ async function resolveMedia(value) {
 }
 
 const wanted = process.argv.slice(2);
-const reelsPath = join(site, 'assets', 'reels.json');
-const reels = existsSync(reelsPath) ? JSON.parse(readFileSync(reelsPath, 'utf8')) : {};
 
 for (const job of jobs.filter((j) => !wanted.length || wanted.includes(j.name))) {
   console.log(`\n${job.name}`);
@@ -78,13 +75,5 @@ for (const job of jobs.filter((j) => !wanted.length || wanted.includes(j.name)))
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, Buffer.from(await api(`/files/${status.outputFileId}/download`)));
   console.log(`  saved ${job.output}                `);
-
-  if (job.reel) {
-    const poster = join(site, job.reel.poster);
-    const ff = spawnSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(job.reel.posterAt), '-i', out, '-frames:v', '1', '-q:v', '3', poster]);
-    if (ff.status !== 0) console.warn('  no poster frame (ffmpeg missing?); the page will show the video without one');
-    reels[job.reel.slot] = { src: job.output, poster: ff.status === 0 ? job.reel.poster : null, job: created.id, renderedAt: new Date().toISOString() };
-    writeFileSync(reelsPath, JSON.stringify(reels, null, 2) + '\n');
-    console.log(`  listed in assets/reels.json as "${job.reel.slot}"`);
-  }
+  publish(job, site, `JsonCut API, job ${created.id}`);
 }
