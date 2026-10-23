@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "bash",
+      "args": ["-c", "exec bash \"$CLAUDE_PROJECT_DIR/.claude/mcp/chrome-devtools.sh\""]
+    }
+  }
+}
