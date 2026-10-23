@@ -33,26 +33,7 @@
     </div>
 
     <div class="hero-panel" data-rise style="--i:4">
-      <div class="feed" data-ui id="feed">
-        <div class="feed-head">
-          <span class="feed-title">New launches</span>
-          <span class="feed-meta"><span class="live-dot" aria-hidden="true"></span>Sample data, replaying</span>
-        </div>
-        <div class="feed-cols" aria-hidden="true"><span>Token</span><span class="num">Age</span><span class="num">Mcap</span><span class="num">Holders</span><span class="num">Read</span></div>
-        <ul class="feed-rows" aria-label="Sample launches">
-          <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>7Hq3…pump</small></span></span><span class="num">0:09</span><span class="num">$13.8k</span><span class="num">61</span><span class="num"><span class="pill pill-neg">3 flags</span></span></div></li>
-          <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">T</span><span class="tok-name">$TOADSTOOL<small>9vRm…pump</small></span></span><span class="num">0:31</span><span class="num">$21.2k</span><span class="num">188</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
-          <li><div class="feed-row"><span class="tok"><span class="av av-3" aria-hidden="true">S</span><span class="tok-name">$SOGGYTOAST<small>4kPz…pump</small></span></span><span class="num">0:47</span><span class="num">$8.9k</span><span class="num">96</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
-          <li><div class="feed-row"><span class="tok"><span class="av av-4" aria-hidden="true">M</span><span class="tok-name">$MOONMOTH<small>2bWx…pump</small></span></span><span class="num">1:12</span><span class="num">$31.5k</span><span class="num">402</span><span class="num"><span class="pill pill-neg">2 flags</span></span></div></li>
-          <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">D</span><span class="tok-name">$DUSTBUNNY<small>8cLe…pump</small></span></span><span class="num">1:40</span><span class="num">$17.3k</span><span class="num">231</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
-          <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">C</span><span class="tok-name">$COLDBREW<small>6wHs…pump</small></span></span><span class="num">2:05</span><span class="num">$44.6k</span><span class="num">517</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
-        </ul>
-        <div class="feed-foot" aria-hidden="true">
-          <span class="feed-reading">Reading <b data-k="reading">$LILPEBBLE</b></span>
-          <span class="feed-bar"><span data-k="bar"></span></span>
-          <span class="num" data-k="checks">7 of 7 checks</span>
-        </div>
-      </div>
+      <video class="hero-reel" src="assets/hero-reel.mp4" poster="assets/hero-reel-poster.jpg" width="1080" height="1080" muted loop playsinline preload="auto" aria-label="Film of a sample launch being read: three flags arrive within nine seconds, the price keeps climbing, then the dev sells at 0:52"></video>
     </div>
   </section>
 
@@ -364,8 +345,27 @@
 
   <section id="join" class="join wrap grid" aria-labelledby="join-title">
     <div class="join-field">
-    <div class="join-reel" data-reveal>
-      <video src="assets/launch-reel.mp4" poster="assets/launch-reel-poster.jpg" width="720" height="720" muted loop playsinline preload="metadata" aria-label="Film of a sample launch being read: three flags arrive, the price climbs, the dev sells at 0:52, then the words The chart is the last to know"></video>
+    <div class="join-feed" data-reveal>
+        <div class="feed" data-ui id="feed">
+          <div class="feed-head">
+            <span class="feed-title">New launches</span>
+            <span class="feed-meta"><span class="live-dot" aria-hidden="true"></span>Sample data, replaying</span>
+          </div>
+          <div class="feed-cols" aria-hidden="true"><span>Token</span><span class="num">Age</span><span class="num">Mcap</span><span class="num">Holders</span><span class="num">Read</span></div>
+          <ul class="feed-rows" aria-label="Sample launches">
+            <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">L</span><span class="tok-name">$LILPEBBLE<small>7Hq3…pump</small></span></span><span class="num">0:09</span><span class="num">$13.8k</span><span class="num">61</span><span class="num"><span class="pill pill-neg">3 flags</span></span></div></li>
+            <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">T</span><span class="tok-name">$TOADSTOOL<small>9vRm…pump</small></span></span><span class="num">0:31</span><span class="num">$21.2k</span><span class="num">188</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
+            <li><div class="feed-row"><span class="tok"><span class="av av-3" aria-hidden="true">S</span><span class="tok-name">$SOGGYTOAST<small>4kPz…pump</small></span></span><span class="num">0:47</span><span class="num">$8.9k</span><span class="num">96</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
+            <li><div class="feed-row"><span class="tok"><span class="av av-4" aria-hidden="true">M</span><span class="tok-name">$MOONMOTH<small>2bWx…pump</small></span></span><span class="num">1:12</span><span class="num">$31.5k</span><span class="num">402</span><span class="num"><span class="pill pill-neg">2 flags</span></span></div></li>
+            <li><div class="feed-row"><span class="tok"><span class="av av-1" aria-hidden="true">D</span><span class="tok-name">$DUSTBUNNY<small>8cLe…pump</small></span></span><span class="num">1:40</span><span class="num">$17.3k</span><span class="num">231</span><span class="num"><span class="pill pill-neg">1 flag</span></span></div></li>
+            <li><div class="feed-row"><span class="tok"><span class="av av-2" aria-hidden="true">C</span><span class="tok-name">$COLDBREW<small>6wHs…pump</small></span></span><span class="num">2:05</span><span class="num">$44.6k</span><span class="num">517</span><span class="num"><span class="pill pill-pos">Clean so far</span></span></div></li>
+          </ul>
+          <div class="feed-foot" aria-hidden="true">
+            <span class="feed-reading">Reading <b data-k="reading">$LILPEBBLE</b></span>
+            <span class="feed-bar"><span data-k="bar"></span></span>
+            <span class="num" data-k="checks">7 of 7 checks</span>
+          </div>
+        </div>
     </div>
     <div class="join-col">
       <h2 id="join-title" class="head join-line" data-reveal>Spots open in the order people&nbsp;join</h2>

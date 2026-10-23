@@ -103,7 +103,8 @@ p { text-wrap: pretty; }
 .hero h1 { font-size: clamp(2.5rem, 1rem + 4vw, 4.6rem); max-width: 9.4em; }
 .hero-sub { margin-top: 32px; max-width: 36ch; }
 .actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
-.hero-panel { grid-column: 7 / span 5; }
+.hero-panel { grid-column: 7 / span 5; padding-right: var(--inset); }
+.hero-reel { display: block; width: 100%; height: auto; aspect-ratio: 1; background: var(--bg); }
 
 /* ---------- interface fragments ---------- */
 [data-ui] { font-size: 15px; line-height: 1.4; color: var(--ui-text); background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: 8px; position: relative; }
@@ -325,8 +326,7 @@ p { text-wrap: pretty; }
 .join { padding-block: clamp(5rem, 9vw, 8rem); }
 .join-field { display: grid; grid-template-columns: subgrid; background: var(--surface); padding-block: clamp(4rem, 8vw, 7rem); }
 .join-field { align-items: center; }
-.join-reel { grid-column: 2 / span 5; }
-.join-reel video { width: 100%; height: auto; aspect-ratio: 1; background: var(--bg); cursor: pointer; }
+.join-feed { grid-column: 2 / span 5; }
 .join-col { grid-column: 7 / span 5; padding-left: var(--inset); }
 .join-line { max-width: 12em; }
 .join-form { max-width: 34rem; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; }
@@ -394,8 +394,8 @@ p { text-wrap: pretty; }
   .faq-a { font-size: var(--step-body); }
   .join { padding-block: 72px; }
   .join-field { padding: 56px 20px; row-gap: 32px; }
-  .join-reel, .join-col { grid-column: 1 / -1; padding-left: 0; }
-  .join-reel { max-width: 440px; }
+  .join-feed, .join-col { grid-column: 1 / -1; padding-left: 0; }
+  .hero-panel { padding-right: 0; }
   .foot { padding-top: 12svh; }
   .foot-line { grid-template-columns: 1fr; gap: 8px; }
   .foot-line nav { flex-wrap: wrap; gap: 8px 20px; }

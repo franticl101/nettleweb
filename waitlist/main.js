@@ -381,22 +381,20 @@ const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   });
 })();
 
-// ---------- the launch reel beside the signup: plays while seen, and a click goes to the email field ----------
+// ---------- the hero reel: plays while it is on screen; under reduced motion it stays on its poster ----------
 (() => {
-  const reel = $('.join-reel video');
-  if (!reel) return;
-  reel.addEventListener('click', () => $('#email')?.focus());
-  if (reduced || !('IntersectionObserver' in window)) return;
-  // the first time it plays, start where the report is already filling in; after that it loops from the top
-  let started = false;
-  const sync = (on) => {
-    if (!on || document.visibilityState !== 'visible') return reel.pause();
-    if (!started) { started = true; reel.currentTime = 3.6; }
+  const reel = $('.hero-reel');
+  if (!reel || reduced) return;
+  // the first time it plays it starts with the report already read, so the first screen is never half empty
+  let seen = true, started = false;
+  const sync = () => {
+    if (!seen || document.visibilityState !== 'visible') return reel.pause();
+    if (!started) { started = true; reel.currentTime = 3.3; }
     reel.play().catch(() => {});
   };
-  let seen = false;
-  new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(seen); }, { threshold: 0.3 }).observe(reel);
-  document.addEventListener('visibilitychange', () => sync(seen));
+  if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { seen = e.isIntersecting; sync(); }, { threshold: 0.2 }).observe(reel);
+  document.addEventListener('visibilitychange', sync);
+  sync();
 })();
 
 // ---------- joining: every "Join the waitlist" lands in the email field ----------
